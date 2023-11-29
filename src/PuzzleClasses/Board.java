@@ -1,5 +1,7 @@
 package PuzzleClasses;
 
+import java.util.Arrays;
+
 public class Board {
     BOARD_SIZES size;
     int[][] board;
@@ -14,7 +16,7 @@ public class Board {
         this.board = board;
     }
 
-    public static int[][] getIdealBoard(BOARD_SIZES size) {
+    public static Board getIdealBoard(BOARD_SIZES size) {
         int[][] idealBoard = new int[size.getNumVal()][size.getNumVal()];
         int counter = 1;
         for (int i = 0; i < size.getNumVal(); i++) {
@@ -23,20 +25,18 @@ public class Board {
             }
         }
         idealBoard[size.getNumVal() - 1][size.getNumVal() - 1] = 0;
-        return idealBoard;
+        return new Board(size, idealBoard);
     }
 
-    public void printBoard() {
-        for (int i = 0; i < size.getNumVal(); i++) {
-            for (int j = 0; j < size.getNumVal(); j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
+    public static void switchPieces(int[][] board, int row1, int col1, int row2, int col2) {
+        int temp = board[row1][col1];
+        board[row1][col1] = board[row2][col2];
+        board[row2][col2] = temp;
     }
+
 
     public BOARD_SIZES getSize() {
-        return size;
+        return this.size;
     }
 
     public void setSize(BOARD_SIZES size) {
@@ -44,10 +44,124 @@ public class Board {
     }
 
     public int[][] getBoard() {
-        return board;
+        return this.board;
     }
 
     public void setBoard(int[][] board) {
         this.board = board;
+    }
+
+    public int[] getEmptyPieceCoordinates() {
+        int[] emptyPieceCoordinates = new int[2];
+        for (int i = 0; i < this.size.getNumVal(); i++) {
+            for (int j = 0; j < this.size.getNumVal(); j++) {
+                if (this.board[i][j] == 0) {
+                    emptyPieceCoordinates[0] = i;
+                    emptyPieceCoordinates[1] = j;
+                    return emptyPieceCoordinates;
+                }
+            }
+        }
+        return null;
+    }
+
+    public int[][] duplicateBoard() {
+        int[][] duplicateBoard = new int[this.size.getNumVal()][this.size.getNumVal()];
+        for (int i = 0; i < this.size.getNumVal(); i++) {
+            for (int j = 0; j < this.size.getNumVal(); j++) {
+                duplicateBoard[i][j] = this.board[i][j];
+            }
+        }
+        return duplicateBoard;
+    }
+
+    public Board getBoardAfterMovingEmptyPieceUp() {
+        int[][] boardAfterMovingPieceUp = this.duplicateBoard();
+        int[] emptyPieceCoordinates = getEmptyPieceCoordinates();
+        int emptyPieceRow = emptyPieceCoordinates[0];
+        int emptyPieceCol = emptyPieceCoordinates[1];
+        if (emptyPieceRow == 0) {
+            return null;
+        }
+        Board.switchPieces(boardAfterMovingPieceUp, emptyPieceRow, emptyPieceCol, emptyPieceRow - 1, emptyPieceCol);
+        return new Board(this.size, boardAfterMovingPieceUp);
+    }
+
+    public Board getBoardAfterMovingEmptyPieceDown() {
+        int[][] boardAfterMovingPieceDown = this.duplicateBoard();
+        int[] emptyPieceCoordinates = getEmptyPieceCoordinates();
+        int emptyPieceRow = emptyPieceCoordinates[0];
+        int emptyPieceCol = emptyPieceCoordinates[1];
+        if (emptyPieceRow == this.size.getNumVal() - 1) {
+            return null;
+        }
+        Board.switchPieces(boardAfterMovingPieceDown, emptyPieceRow, emptyPieceCol, emptyPieceRow + 1, emptyPieceCol);
+        return new Board(this.size, boardAfterMovingPieceDown);
+    }
+
+
+    public Board getBoardAfterMovingEmptyPieceLeft() {
+        int[][] boardAfterMovingPieceLeft = this.duplicateBoard();
+        int[] emptyPieceCoordinates = getEmptyPieceCoordinates();
+        int emptyPieceRow = emptyPieceCoordinates[0];
+        int emptyPieceCol = emptyPieceCoordinates[1];
+        if (emptyPieceCol == 0) {
+            return null;
+        }
+        Board.switchPieces(boardAfterMovingPieceLeft, emptyPieceRow, emptyPieceCol, emptyPieceRow, emptyPieceCol - 1);
+        return new Board(this.size, boardAfterMovingPieceLeft);
+    }
+
+    public Board getBoardAfterMovingEmptyPieceRight() {
+        int[][] boardAfterMovingPieceRight = this.duplicateBoard();
+        int[] emptyPieceCoordinates = getEmptyPieceCoordinates();
+        int emptyPieceRow = emptyPieceCoordinates[0];
+        int emptyPieceCol = emptyPieceCoordinates[1];
+        if (emptyPieceCol == this.size.getNumVal() - 1) {
+            return null;
+        }
+        Board.switchPieces(boardAfterMovingPieceRight, emptyPieceRow, emptyPieceCol, emptyPieceRow, emptyPieceCol + 1);
+        return new Board(this.size, boardAfterMovingPieceRight);
+    }
+
+    public boolean isIdealBoard() {
+        Board idealBoard = Board.getIdealBoard(this.size);
+        for (int i = 0; i < this.size.getNumVal(); i++) {
+            for (int j = 0; j < this.size.getNumVal(); j++) {
+                if (this.board[i][j] != idealBoard.getBoard()[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public String toString() {
+        String boardString = "";
+        for (int i = 0; i < this.size.getNumVal(); i++) {
+            for (int j = 0; j < this.size.getNumVal(); j++) {
+                boardString += this.board[i][j] + " ";
+            }
+            boardString += "\n";
+        }
+        return boardString;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Board)) return false;
+
+        Board board1 = (Board) o;
+
+        if (this.getSize() != board1.getSize()) return false;
+        return Arrays.deepEquals(this.board, board1.getBoard());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = this.size.hashCode();
+        result = 31 * result + Arrays.deepHashCode(this.board);
+        return result;
     }
 }
