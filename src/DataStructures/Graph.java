@@ -12,6 +12,11 @@ public class Graph<T> {
         this.adjecntVerticesPerVertex = new HashMap<Vertex<T>, List<Vertex<T>>>();
     }
 
+    public Graph(Vertex<T> vertex) {
+        this.adjecntVerticesPerVertex = new HashMap<Vertex<T>, List<Vertex<T>>>();
+        this.addVertex(vertex);
+    }
+
     public Graph(Map<Vertex<T>, List<Vertex<T>>> adjecntVerticesPerVertex) {
         this.adjecntVerticesPerVertex = adjecntVerticesPerVertex;
     }
