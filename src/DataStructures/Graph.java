@@ -55,4 +55,43 @@ public class Graph<T> {
         return adjecntVerticesPerVertex.get(vertex);
     }
 
+    public void printGraph() {
+        for (Vertex<T> vertex : this.adjecntVerticesPerVertex.keySet()) {
+            System.out.println("Vertex: ");
+            System.out.println(vertex.getValue().toString());
+            System.out.println("Adjecnt vertices: ");
+            for (Vertex<T> adjecntVertex : this.adjecntVerticesPerVertex.get(vertex)) {
+                System.out.println(adjecntVertex.getValue().toString());
+            }
+            System.out.println();
+        }
+    }
+
+    public Vertex<T> moveRandomly(int n) {
+        Vertex<T> currentVertex = this.adjecntVerticesPerVertex.keySet().iterator().next(); // get first vertex
+        for (int i = 0; i < n; i++) {
+            List<Vertex<T>> adjecntVertices = this.adjecntVerticesPerVertex.get(currentVertex);
+            int randomIndex = (int) (Math.random() * adjecntVertices.size());
+            currentVertex = adjecntVertices.get(randomIndex);
+        }
+        return currentVertex;
+    }
+
+    public void buildGraph(Vertex<T> vertex) {
+        if (vertex == null) {
+            return;
+        }
+        T value = vertex.getValue();
+        if (value == null) {
+            return;
+        }
+
+        for (Vertex<T> adjecntVertex : vertex.getAdjecntVertices()) {
+            if (!this.getAdjecntVerticesPerVertex().containsKey(adjecntVertex)) {
+                this.addVertex(adjecntVertex);
+                this.addEdge(vertex, adjecntVertex);
+                buildGraph(adjecntVertex);
+            }
+        }
+    }
 }
