@@ -1,4 +1,7 @@
-package DataStructures;
+package Algorithms;
+
+import DataStructures.GraphableValue;
+import DataStructures.Vertex;
 
 public class VertexInSearch<T extends GraphableValue> extends Vertex<T> {
     int distanceFromRoot;

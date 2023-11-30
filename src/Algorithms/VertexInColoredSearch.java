@@ -1,4 +1,8 @@
-package DataStructures;
+package Algorithms;
+
+import DataStructures.COLORS;
+import DataStructures.GraphableValue;
+import DataStructures.Vertex;
 
 public class VertexInColoredSearch<T extends GraphableValue> extends VertexInSearch<T> {
     COLORS color;

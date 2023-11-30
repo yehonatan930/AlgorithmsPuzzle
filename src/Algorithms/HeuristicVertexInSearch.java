@@ -1,6 +1,7 @@
-package DataStructures;
+package Algorithms;
 
-import Algorithms.HeuristicFunction;
+import DataStructures.GraphableValue;
+import DataStructures.Vertex;
 
 public class HeuristicVertexInSearch<T extends GraphableValue> extends VertexInSearch<T> {
     int heuristicDistanceFromRoot;
