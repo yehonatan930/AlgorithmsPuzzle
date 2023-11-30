@@ -1,8 +1,12 @@
 package PuzzleClasses;
 
-import java.util.Arrays;
+import DataStructures.GraphableValue;
 
-public class Board {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Board implements GraphableValue {
     BOARD_SIZES size;
     int[][] board;
 
@@ -124,6 +128,31 @@ public class Board {
         return new Board(this.size, boardAfterMovingPieceRight);
     }
 
+    @Override
+    public List<GraphableValue> getAdjecntValues() {
+
+        List<GraphableValue> adjecntValues = new ArrayList<GraphableValue>();
+        Board boardAfterMovingEmptyPieceUp = this.getBoardAfterMovingEmptyPieceUp();
+        Board boardAfterMovingEmptyPieceDown = this.getBoardAfterMovingEmptyPieceDown();
+        Board boardAfterMovingEmptyPieceLeft = this.getBoardAfterMovingEmptyPieceLeft();
+        Board boardAfterMovingEmptyPieceRight = this.getBoardAfterMovingEmptyPieceRight();
+
+        if (boardAfterMovingEmptyPieceUp != null) {
+            adjecntValues.add(boardAfterMovingEmptyPieceUp);
+        }
+        if (boardAfterMovingEmptyPieceDown != null) {
+            adjecntValues.add(boardAfterMovingEmptyPieceDown);
+        }
+        if (boardAfterMovingEmptyPieceLeft != null) {
+            adjecntValues.add(boardAfterMovingEmptyPieceLeft);
+        }
+        if (boardAfterMovingEmptyPieceRight != null) {
+            adjecntValues.add(boardAfterMovingEmptyPieceRight);
+        }
+        return adjecntValues;
+    }
+
+
     public boolean isIdealBoard() {
         Board idealBoard = Board.getIdealBoard(this.size);
         for (int i = 0; i < this.size.getNumVal(); i++) {
@@ -163,5 +192,19 @@ public class Board {
         int result = this.size.hashCode();
         result = 31 * result + Arrays.deepHashCode(this.board);
         return result;
+    }
+
+    @Override
+    public int getHemingDistanceFromIdealValue() {
+        int hemingDistance = 0;
+        Board idealBoard = Board.getIdealBoard(this.size);
+        for (int i = 0; i < this.size.getNumVal(); i++) {
+            for (int j = 0; j < this.size.getNumVal(); j++) {
+                if (this.board[i][j] != idealBoard.getBoard()[i][j]) {
+                    hemingDistance++;
+                }
+            }
+        }
+        return hemingDistance;
     }
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Graph<T> {
+public class Graph<T extends GraphableValue> {
     private Map<Vertex<T>, List<Vertex<T>>> adjecntVerticesPerVertex;
 
     public Graph() {
@@ -98,5 +98,9 @@ public class Graph<T> {
                 buildGraph(adjecntVertex);
             }
         }
+    }
+
+    public int getWeight(Vertex<T> v1, Vertex<T> v2) {
+        return 1;
     }
 }

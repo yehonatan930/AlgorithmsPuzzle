@@ -1,35 +1,35 @@
 package DataStructures;
 
-public class VertexInSearch<T> {
-    Vertex<T> vertex;
+public class VertexInSearch<T extends GraphableValue> extends Vertex<T> {
     int distanceFromRoot;
     Vertex<T> priorVertex;
-    COLORS color;
 
     public VertexInSearch(Vertex<T> vertex) {
-        this.vertex = vertex;
+        super(vertex.getValue());
         this.distanceFromRoot = 0;
         this.priorVertex = null;
-        this.color = COLORS.WHITE;
     }
 
-    public VertexInSearch(Vertex<T> vertex, int distanceFromRoot, Vertex<T> priorVertex, COLORS color) {
-        this.vertex = vertex;
+    public VertexInSearch(T value) {
+        super(value);
+        this.distanceFromRoot = 0;
+        this.priorVertex = null;
+    }
+
+    public VertexInSearch(Vertex<T> vertex, int distanceFromRoot, Vertex<T> priorVertex) {
+        super(vertex.getValue());
         this.distanceFromRoot = distanceFromRoot;
         this.priorVertex = priorVertex;
-        this.color = color;
     }
 
-    public Vertex<T> getVertex() {
-        return vertex;
-    }
-
-    public void setVertex(Vertex<T> vertex) {
-        this.vertex = vertex;
+    public VertexInSearch(T value, int distanceFromRoot, Vertex<T> priorVertex) {
+        super(value);
+        this.distanceFromRoot = distanceFromRoot;
+        this.priorVertex = priorVertex;
     }
 
     public int getDistanceFromRoot() {
-        return distanceFromRoot;
+        return this.distanceFromRoot;
     }
 
     public void setDistanceFromRoot(int distanceFromRoot) {
@@ -37,33 +37,23 @@ public class VertexInSearch<T> {
     }
 
     public Vertex<T> getPriorVertex() {
-        return priorVertex;
+        return this.priorVertex;
     }
 
     public void setPriorVertex(Vertex<T> priorVertex) {
         this.priorVertex = priorVertex;
     }
 
-    public COLORS getColor() {
-        return color;
-    }
+    public boolean relax(VertexInSearch<T> vertexInSearch, int weight) {
+        int tentativeDistance = this.getDistanceFromRoot() + weight;
 
-    public void setColor(COLORS color) {
-        this.color = color;
-    }
+        if (tentativeDistance < vertexInSearch.getDistanceFromRoot()) {
+            vertexInSearch.setDistanceFromRoot(tentativeDistance);
+            vertexInSearch.setPriorVertex(this);
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof VertexInSearch)) return false;
+            return true;
+        }
 
-        VertexInSearch<?> that = (VertexInSearch<?>) o;
-
-        return getVertex().equals(that.getVertex());
-    }
-
-    @Override
-    public int hashCode() {
-        return getVertex().hashCode();
+        return false;
     }
 }
