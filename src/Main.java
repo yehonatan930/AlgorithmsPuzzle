@@ -1,5 +1,5 @@
+import Algorithms.Vertex;
 import DataStructures.Graph;
-import DataStructures.Vertex;
 import PuzzleClasses.BOARD_SIZES;
 import PuzzleClasses.Board;
 

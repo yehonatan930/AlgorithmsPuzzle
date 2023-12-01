@@ -1,12 +1,11 @@
 package Algorithms;
 
 import DataStructures.GraphableValue;
-import DataStructures.Vertex;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeuristicVertexInSearch extends VertexInSearch {
+public class HeuristicVertexInSearch extends Vertex {
     HeuristicFunction heuristicFunction;
 
 
@@ -17,21 +16,6 @@ public class HeuristicVertexInSearch extends VertexInSearch {
 
     public HeuristicVertexInSearch(GraphableValue value, HeuristicFunction heuristicFunction) {
         super(value);
-        this.heuristicFunction = heuristicFunction;
-    }
-
-    public HeuristicVertexInSearch(Vertex vertex, int distanceFromRoot, Vertex priorVertex, HeuristicFunction heuristicFunction) {
-        super(vertex, distanceFromRoot, priorVertex);
-        this.heuristicFunction = heuristicFunction;
-    }
-
-    public HeuristicVertexInSearch(VertexInSearch vertexInSearch, HeuristicFunction heuristicFunction) {
-        super(vertexInSearch);
-        this.heuristicFunction = heuristicFunction;
-    }
-
-    public HeuristicVertexInSearch(Vertex vertex, HeuristicFunction heuristicFunction) {
-        super(vertex);
         this.heuristicFunction = heuristicFunction;
     }
 

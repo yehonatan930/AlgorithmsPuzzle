@@ -2,28 +2,18 @@ package Algorithms;
 
 import DataStructures.COLORS;
 import DataStructures.GraphableValue;
-import DataStructures.Vertex;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VertexInColoredSearch extends VertexInSearch {
+public class VertexInColoredSearch extends Vertex {
     COLORS color;
-
-    public VertexInColoredSearch(Vertex vertex) {
-        super(vertex);
-        this.color = COLORS.WHITE;
-    }
-
+    
     public VertexInColoredSearch(GraphableValue value) {
         super(value);
         this.color = COLORS.WHITE;
     }
 
-    public VertexInColoredSearch(Vertex vertex, int distanceFromRoot, Vertex priorVertex, COLORS color) {
-        super(vertex, distanceFromRoot, priorVertex);
-        this.color = color;
-    }
 
     public VertexInColoredSearch(GraphableValue value, int distanceFromRoot, Vertex priorVertex, COLORS color) {
         super(value, distanceFromRoot, priorVertex);
