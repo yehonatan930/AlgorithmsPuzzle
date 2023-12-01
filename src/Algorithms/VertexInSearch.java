@@ -56,7 +56,6 @@ public class VertexInSearch<T extends GraphableValue> extends Vertex<T> {
 
             return true;
         }
-
         return false;
     }
 }

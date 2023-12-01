@@ -13,7 +13,7 @@ public class Searches<T extends GraphableValue> {
     public static HeuristicFunction<GraphableValue> manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
     public static HeuristicFunction<GraphableValue> dijkstra = value -> 0;
 
-    public ArrayList<VertexInColoredSearch<T>> BFS(Graph<T> graph, Vertex<T> root) {
+    public ArrayList<VertexInColoredSearch<T>> BFS(Graph<T> graph, Vertex<T> root, Vertex<T> goal) {
         ArrayList<VertexInColoredSearch<T>> verticesInSearch = new ArrayList<VertexInColoredSearch<T>>();
         for (Vertex<T> v : graph.getAdjecntVerticesPerVertex().keySet()) {
             if (v.equals(root)) continue;
@@ -27,6 +27,12 @@ public class Searches<T extends GraphableValue> {
 
         while (!queue.isEmpty()) {
             VertexInColoredSearch<T> vertexInColoredSearch = queue.poll();
+
+            if (vertexInColoredSearch.equals(goal)) {
+                // Goal reached
+                break;
+            }
+
             for (Vertex<T> v : graph.getAdjVertices(vertexInColoredSearch)) {
                 VertexInColoredSearch<T> adjV = verticesInSearch.get(verticesInSearch.indexOf(new VertexInColoredSearch<T>(v)));
                 if (adjV.getColor() == COLORS.WHITE) {
@@ -54,21 +60,21 @@ public class Searches<T extends GraphableValue> {
         return verticesInSearch;
     }
 
-    public ArrayList<VertexInSearch<T>> Dijskstra(Graph<T> graph, Vertex<T> root) {
-        ArrayList<VertexInSearch<T>> verticesInSearch = InitializeSingleSource(graph, root);
-
-        ArrayList<VertexInSearch<T>> verticesInSearchQueue = new ArrayList<VertexInSearch<T>>(verticesInSearch);
-        while (!verticesInSearchQueue.isEmpty()) {
-            VertexInSearch<T> vertexInSearch = verticesInSearchQueue.get(0);
-            for (Vertex<T> v : graph.getAdjVertices(vertexInSearch)) {
-                VertexInSearch<T> adjV = verticesInSearch.get(verticesInSearch.indexOf(new VertexInSearch<T>(v)));
-                adjV.relax(vertexInSearch, graph.getWeight(vertexInSearch, adjV));
-            }
-            verticesInSearchQueue.remove(vertexInSearch);
-        }
-
-        return verticesInSearch;
-    }
+//    public ArrayList<VertexInSearch<T>> Dijskstra(Graph<T> graph, Vertex<T> root) {
+//        ArrayList<VertexInSearch<T>> verticesInSearch = InitializeSingleSource(graph, root);
+//
+//        ArrayList<VertexInSearch<T>> verticesInSearchQueue = new ArrayList<VertexInSearch<T>>(verticesInSearch);
+//        while (!verticesInSearchQueue.isEmpty()) {
+//            VertexInSearch<T> vertexInSearch = verticesInSearchQueue.get(0);
+//            for (Vertex<T> v : graph.getAdjVertices(vertexInSearch)) {
+//                VertexInSearch<T> adjV = verticesInSearch.get(verticesInSearch.indexOf(new VertexInSearch<T>(v)));
+//                adjV.relax(vertexInSearch, graph.getWeight(vertexInSearch, adjV));
+//            }
+//            verticesInSearchQueue.remove(vertexInSearch);
+//        }
+//
+//        return verticesInSearch;
+//    }
 
     public ArrayList<HeuristicVertexInSearch<T>> AStar(Graph<T> graph, Vertex<T> start, Vertex<T> goal, HeuristicFunction<T> heuristicFunction) {
         ArrayList<HeuristicVertexInSearch<T>> verticesInSearch = InitializeSingleSource(graph, start).stream()
@@ -89,7 +95,6 @@ public class Searches<T extends GraphableValue> {
 
             for (Vertex<T> neighbor : graph.getAdjVertices(currentVertex)) {
                 HeuristicVertexInSearch<T> neighborInSearch = verticesInSearch.get(verticesInSearch.indexOf(new HeuristicVertexInSearch<>(neighbor)));
-
 
                 if (currentVertex.relax(neighborInSearch, graph.getWeight(currentVertex, neighborInSearch))) {
                     if (!openSet.contains(neighborInSearch)) {
