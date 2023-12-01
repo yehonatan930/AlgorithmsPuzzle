@@ -3,6 +3,6 @@ package Algorithms;
 import DataStructures.GraphableValue;
 
 @FunctionalInterface
-public interface HeuristicFunction<T extends GraphableValue> {
-    int calculateHeuristic(T value);
+public interface HeuristicFunction {
+    int calculateHeuristic(GraphableValue value);
 }

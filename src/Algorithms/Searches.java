@@ -3,108 +3,70 @@ package Algorithms;
 import DataStructures.COLORS;
 import DataStructures.Graph;
 import DataStructures.GraphableValue;
-import DataStructures.Vertex;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class Searches<T extends GraphableValue> {
-    public static HeuristicFunction<GraphableValue> heming = GraphableValue::getHemingDistanceFromIdealValue;
-    public static HeuristicFunction<GraphableValue> manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
-    public static HeuristicFunction<GraphableValue> dijkstra = value -> 0;
+public class Searches {
+    public static HeuristicFunction heming = GraphableValue::getHemingDistanceFromIdealValue;
+    public static HeuristicFunction manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
+    public static HeuristicFunction dijkstra = value -> 0;
 
-    public ArrayList<VertexInColoredSearch<T>> BFS(Graph<T> graph, Vertex<T> root, Vertex<T> goal) {
-        ArrayList<VertexInColoredSearch<T>> verticesInSearch = new ArrayList<VertexInColoredSearch<T>>();
-        for (Vertex<T> v : graph.getAdjecntVerticesPerVertex().keySet()) {
-            if (v.equals(root)) continue;
-            verticesInSearch.add(new VertexInColoredSearch<T>(v));
-        }
-        VertexInColoredSearch<T> rootInSearch = new VertexInColoredSearch<T>(root, 0, null, COLORS.GRAY);
-        verticesInSearch.add(rootInSearch);
+    public static Graph<VertexInColoredSearch> BFS(GraphableValue root, GraphableValue goal) {
+        Graph<VertexInColoredSearch> graph = new Graph<VertexInColoredSearch>(new VertexInColoredSearch(root));
 
-        Queue<VertexInColoredSearch<T>> queue = new LinkedList<VertexInColoredSearch<T>>();
-        queue.add(rootInSearch);
+        Queue<VertexInColoredSearch> queue = new LinkedList<VertexInColoredSearch>();
+        queue.add(new VertexInColoredSearch(root));
 
         while (!queue.isEmpty()) {
-            VertexInColoredSearch<T> vertexInColoredSearch = queue.poll();
+            VertexInColoredSearch vertexInColoredSearch = queue.poll();
 
-            if (vertexInColoredSearch.equals(goal)) {
+            if (vertexInColoredSearch.getValue().equals(goal)) {
                 // Goal reached
                 break;
             }
 
-            for (Vertex<T> v : graph.getAdjVertices(vertexInColoredSearch)) {
-                VertexInColoredSearch<T> adjV = verticesInSearch.get(verticesInSearch.indexOf(new VertexInColoredSearch<T>(v)));
-                if (adjV.getColor() == COLORS.WHITE) {
-                    adjV.setColor(COLORS.GRAY);
-                    adjV.setDistanceFromRoot(vertexInColoredSearch.getDistanceFromRoot() + 1);
-                    adjV.setPriorVertex(vertexInColoredSearch);
-                    queue.add(adjV);
+            List<VertexInColoredSearch> adjecntVertices = graph.getAndFillAdjVertices(vertexInColoredSearch);
+
+            for (VertexInColoredSearch v : adjecntVertices) {
+                if (v.getColor() == COLORS.WHITE) {
+                    v.setColor(COLORS.GRAY);
+                    v.setDistanceFromRoot(vertexInColoredSearch.getDistanceFromRoot() + 1);
+                    v.setPriorVertex(vertexInColoredSearch);
+                    queue.add(v);
                 }
             }
             vertexInColoredSearch.setColor(COLORS.BLACK);
         }
 
-        return verticesInSearch;
+        return graph;
     }
 
-    public ArrayList<VertexInSearch<T>> InitializeSingleSource(Graph<T> graph, Vertex<T> root) {
-        ArrayList<VertexInSearch<T>> verticesInSearch = new ArrayList<VertexInSearch<T>>();
-        for (Vertex<T> v : graph.getAdjecntVerticesPerVertex().keySet()) {
-            if (v.equals(root)) continue;
-            verticesInSearch.add(new VertexInSearch<T>(v));
-        }
-        VertexInSearch<T> rootInSearch = new VertexInSearch<T>(root, 0, null);
-        verticesInSearch.add(rootInSearch);
+    public static Graph<HeuristicVertexInSearch> AStar(GraphableValue start, GraphableValue goal, HeuristicFunction heuristicFunction) {
+        Graph<HeuristicVertexInSearch> graph = new Graph<HeuristicVertexInSearch>(new HeuristicVertexInSearch(start, heuristicFunction));
 
-        return verticesInSearch;
-    }
-
-//    public ArrayList<VertexInSearch<T>> Dijskstra(Graph<T> graph, Vertex<T> root) {
-//        ArrayList<VertexInSearch<T>> verticesInSearch = InitializeSingleSource(graph, root);
-//
-//        ArrayList<VertexInSearch<T>> verticesInSearchQueue = new ArrayList<VertexInSearch<T>>(verticesInSearch);
-//        while (!verticesInSearchQueue.isEmpty()) {
-//            VertexInSearch<T> vertexInSearch = verticesInSearchQueue.get(0);
-//            for (Vertex<T> v : graph.getAdjVertices(vertexInSearch)) {
-//                VertexInSearch<T> adjV = verticesInSearch.get(verticesInSearch.indexOf(new VertexInSearch<T>(v)));
-//                adjV.relax(vertexInSearch, graph.getWeight(vertexInSearch, adjV));
-//            }
-//            verticesInSearchQueue.remove(vertexInSearch);
-//        }
-//
-//        return verticesInSearch;
-//    }
-
-    public ArrayList<HeuristicVertexInSearch<T>> AStar(Graph<T> graph, Vertex<T> start, Vertex<T> goal, HeuristicFunction<T> heuristicFunction) {
-        ArrayList<HeuristicVertexInSearch<T>> verticesInSearch = InitializeSingleSource(graph, start).stream()
-                .map(vertexInSearch -> new HeuristicVertexInSearch<T>(vertexInSearch, heuristicFunction))
-                .collect(Collectors.toCollection(ArrayList::new));
-
-
-        PriorityQueue<HeuristicVertexInSearch<T>> openSet = new PriorityQueue<>(Comparator.comparingInt(HeuristicVertexInSearch::getHeuristicDistanceFromRootPlusDistanceFromRoot));
-        openSet.addAll(verticesInSearch);
+        PriorityQueue<HeuristicVertexInSearch> openSet = new PriorityQueue<>(Comparator.comparingInt(HeuristicVertexInSearch::getHeuristicDistanceFromRootPlusDistanceFromRoot));
+        openSet.add(new HeuristicVertexInSearch(start, heuristicFunction));
 
         while (!openSet.isEmpty()) {
-            HeuristicVertexInSearch<T> currentVertex = openSet.poll();
+            HeuristicVertexInSearch currentVertex = openSet.poll();
 
-            if (currentVertex.equals(goal)) {
+            if (currentVertex.getValue().equals(goal)) {
                 // Goal reached
                 break;
             }
 
-            for (Vertex<T> neighbor : graph.getAdjVertices(currentVertex)) {
-                HeuristicVertexInSearch<T> neighborInSearch = verticesInSearch.get(verticesInSearch.indexOf(new HeuristicVertexInSearch<>(neighbor)));
+            List<HeuristicVertexInSearch> adjecntVertices = graph.getAndFillAdjVertices(currentVertex);
 
-                if (currentVertex.relax(neighborInSearch, graph.getWeight(currentVertex, neighborInSearch))) {
-                    if (!openSet.contains(neighborInSearch)) {
-                        openSet.add(neighborInSearch);
+            for (HeuristicVertexInSearch neighbor : adjecntVertices) {
+                if (currentVertex.relax(neighbor, graph.getWeight(currentVertex, neighbor))) {
+                    if (!openSet.contains(neighbor)) {
+                        openSet.add(neighbor);
                     }
                 }
             }
         }
 
-        return verticesInSearch;
+        return graph;
     }
 
 }

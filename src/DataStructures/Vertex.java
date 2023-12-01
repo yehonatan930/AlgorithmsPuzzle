@@ -3,18 +3,18 @@ package DataStructures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vertex<T extends GraphableValue> {
-    T value;
+public class Vertex {
+    GraphableValue value;
 
-    public Vertex(T value) {
+    public Vertex(GraphableValue value) {
         this.value = value;
     }
 
-    public T getValue() {
+    public GraphableValue getValue() {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(GraphableValue value) {
         this.value = value;
     }
 
@@ -23,7 +23,7 @@ public class Vertex<T extends GraphableValue> {
         if (this == o) return true;
         if (!(o instanceof Vertex)) return false;
 
-        Vertex<?> vertex = (Vertex<?>) o;
+        Vertex vertex = (Vertex) o;
 
         return this.getValue() != null ? this.getValue().equals(vertex.getValue()) : vertex.getValue() == null;
     }
@@ -34,11 +34,11 @@ public class Vertex<T extends GraphableValue> {
     }
 
 
-    public List<Vertex<T>> getAdjecntVertices() {
+    public List<Vertex> getAdjecntVertices() {
         List<GraphableValue> adjecntValues = this.getValue().getAdjecntValues();
-        List<Vertex<T>> adjecntVertices = new ArrayList<Vertex<T>>();
+        List<Vertex> adjecntVertices = new ArrayList<Vertex>();
         for (GraphableValue adjecntValue : adjecntValues) {
-            adjecntVertices.add(new Vertex<T>((T) adjecntValue));
+            adjecntVertices.add(new Vertex(adjecntValue));
         }
 
         return adjecntVertices;

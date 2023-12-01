@@ -3,29 +3,55 @@ package Algorithms;
 import DataStructures.GraphableValue;
 import DataStructures.Vertex;
 
-public class HeuristicVertexInSearch<T extends GraphableValue> extends VertexInSearch<T> {
-    int heuristicDistanceFromRoot;
+import java.util.ArrayList;
+import java.util.List;
 
-    public HeuristicVertexInSearch(VertexInSearch<T> vertexInSearch, HeuristicFunction<T> heuristicFunction) {
+public class HeuristicVertexInSearch extends VertexInSearch {
+    HeuristicFunction heuristicFunction;
+
+
+    public HeuristicVertexInSearch(GraphableValue value, int distanceFromRoot, HeuristicVertexInSearch priorVertex, HeuristicFunction heuristicFunction) {
+        super(value, distanceFromRoot, priorVertex);
+        this.heuristicFunction = heuristicFunction;
+    }
+
+    public HeuristicVertexInSearch(GraphableValue value, HeuristicFunction heuristicFunction) {
+        super(value);
+        this.heuristicFunction = heuristicFunction;
+    }
+
+    public HeuristicVertexInSearch(Vertex vertex, int distanceFromRoot, Vertex priorVertex, HeuristicFunction heuristicFunction) {
+        super(vertex, distanceFromRoot, priorVertex);
+        this.heuristicFunction = heuristicFunction;
+    }
+
+    public HeuristicVertexInSearch(VertexInSearch vertexInSearch, HeuristicFunction heuristicFunction) {
         super(vertexInSearch);
-        this.heuristicDistanceFromRoot = heuristicFunction.calculateHeuristic(this.getValue());
+        this.heuristicFunction = heuristicFunction;
     }
 
-    public HeuristicVertexInSearch(Vertex<T> vertex) {
+    public HeuristicVertexInSearch(Vertex vertex, HeuristicFunction heuristicFunction) {
         super(vertex);
-        this.heuristicDistanceFromRoot = 0;
+        this.heuristicFunction = heuristicFunction;
     }
 
-    public int getHeuristicDistanceFromRoot() {
-        return this.heuristicDistanceFromRoot;
-    }
-
-    public void setHeuristicDistanceFromRoot(int heuristicDistanceFromRoot) {
-        this.heuristicDistanceFromRoot = heuristicDistanceFromRoot;
+    public int calculateHeuristicDistanceFromRoot() {
+        return this.heuristicFunction.calculateHeuristic(this.getValue());
     }
 
     public int getHeuristicDistanceFromRootPlusDistanceFromRoot() {
-        return this.heuristicDistanceFromRoot + this.distanceFromRoot;
+        return this.calculateHeuristicDistanceFromRoot() + this.distanceFromRoot;
+    }
+
+    @Override
+    public List<Vertex> getAdjecntVertices() {
+        List<GraphableValue> adjecntValues = this.getValue().getAdjecntValues();
+        List<Vertex> adjecntVertices = new ArrayList<Vertex>();
+        for (GraphableValue adjecntValue : adjecntValues) {
+            adjecntVertices.add(new HeuristicVertexInSearch(adjecntValue, this.heuristicFunction));
+        }
+
+        return adjecntVertices;
     }
 
 }

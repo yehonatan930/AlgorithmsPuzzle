@@ -1,6 +1,7 @@
+import DataStructures.Graph;
+import DataStructures.Vertex;
 import PuzzleClasses.BOARD_SIZES;
 import PuzzleClasses.Board;
-import PuzzleClasses.BoardGraph;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -9,12 +10,9 @@ public class Main {
 //        Board board = IO.inputBoard();
 //        System.out.println(board);
 
-        Board board = BoardGraph.getSolvableBoard(BOARD_SIZES.A, 1).getValue();
-        System.out.println(board);
+        Graph<Vertex> graph = new Graph<Vertex>(new Vertex(Board.getIdealBoard(BOARD_SIZES.A)));
 
-//        for (GraphableValue board :
-//                Board.getIdealBoard(BOARD_SIZES.A).getAdjecntValues()) {
-//            System.out.println(board);
-//        }
+        Board board = (Board) graph.moveRandomly(1).getValue();
+        System.out.println(board);
     }
 }
