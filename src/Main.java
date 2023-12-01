@@ -12,7 +12,7 @@ public class Main {
 
         Graph<Vertex> graph = new Graph<Vertex>(new Vertex(Board.getIdealBoard(BOARD_SIZES.A)));
 
-        Board board = (Board) graph.moveRandomly(1).getValue();
+        Board board = (Board) graph.moveRandomly(40).getValue();
         System.out.println(board);
     }
 }

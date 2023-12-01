@@ -64,14 +64,9 @@ public class Graph<V extends Vertex> {
     }
 
     public List<V> getAndFillAdjVertices(V vertex) {
-        List<V> adjecntVertices = this.getAdjVertices(vertex);
+        this.buildGraphAroundVertex(vertex);
 
-        if (adjecntVertices.isEmpty()) {
-            this.buildGraphAroundVertex(vertex);
-            adjecntVertices = this.getAdjVertices(vertex);
-        }
-
-        return adjecntVertices;
+        return this.getAdjVertices(vertex);
     }
 
     public V moveRandomly(int n) {
