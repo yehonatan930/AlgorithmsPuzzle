@@ -1,12 +1,16 @@
 package Algorithms;
 
-import DataStructures.*;
+import DataStructures.COLORS;
+import DataStructures.Graph;
+import DataStructures.GraphableValue;
+import DataStructures.Vertex;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Searches<T extends GraphableValue> {
     public static HeuristicFunction<GraphableValue> heming = GraphableValue::getHemingDistanceFromIdealValue;
+    public static HeuristicFunction<GraphableValue> manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
     public static HeuristicFunction<GraphableValue> dijkstra = value -> 0;
 
     public ArrayList<VertexInColoredSearch<T>> BFS(Graph<T> graph, Vertex<T> root) {

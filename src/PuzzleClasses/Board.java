@@ -152,8 +152,8 @@ public class Board implements GraphableValue {
         return adjecntValues;
     }
 
-
-    public boolean isIdealBoard() {
+    @Override
+    public boolean isIdealValue() {
         Board idealBoard = Board.getIdealBoard(this.size);
         for (int i = 0; i < this.size.getNumVal(); i++) {
             for (int j = 0; j < this.size.getNumVal(); j++) {
@@ -206,5 +206,32 @@ public class Board implements GraphableValue {
             }
         }
         return hemingDistance;
+    }
+
+    public int[] getPositionInBoard(int value) {
+        int[] position = new int[2];
+        for (int i = 0; i < this.size.getNumVal(); i++) {
+            for (int j = 0; j < this.size.getNumVal(); j++) {
+                if (this.board[i][j] == value) {
+                    position[0] = i;
+                    position[1] = j;
+                    return position;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int getManhattanDistanceFromIdealValue() {
+        int manhattanDistance = 0;
+        Board idealBoard = Board.getIdealBoard(this.size);
+        for (int i = 0; i < this.size.getNumVal(); i++) {
+            for (int j = 0; j < this.size.getNumVal(); j++) {
+                int[] positionInIdealBoard = idealBoard.getPositionInBoard(this.board[i][j]);
+                manhattanDistance += Math.abs(i - positionInIdealBoard[0]) + Math.abs(j - positionInIdealBoard[1]);
+            }
+        }
+        return manhattanDistance;
     }
 }
