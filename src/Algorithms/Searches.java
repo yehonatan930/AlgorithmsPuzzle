@@ -11,6 +11,8 @@ public class Searches {
     public static HeuristicFunction manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
     public static HeuristicFunction dijkstra = value -> 0;
 
+    public static HeuristicFunction bad = value -> (int) (Math.random() * 10);
+
     public static Graph<ColoredVertex> BFS(GraphableValue root, GraphableValue goal) {
         Graph<ColoredVertex> graph = new Graph<ColoredVertex>(new ColoredVertex(root));
 
