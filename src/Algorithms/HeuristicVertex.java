@@ -5,16 +5,16 @@ import DataStructures.GraphableValue;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeuristicVertexInSearch extends Vertex {
+public class HeuristicVertex extends Vertex {
     HeuristicFunction heuristicFunction;
 
 
-    public HeuristicVertexInSearch(GraphableValue value, int distanceFromRoot, HeuristicVertexInSearch priorVertex, HeuristicFunction heuristicFunction) {
+    public HeuristicVertex(GraphableValue value, int distanceFromRoot, HeuristicVertex priorVertex, HeuristicFunction heuristicFunction) {
         super(value, distanceFromRoot, priorVertex);
         this.heuristicFunction = heuristicFunction;
     }
 
-    public HeuristicVertexInSearch(GraphableValue value, HeuristicFunction heuristicFunction) {
+    public HeuristicVertex(GraphableValue value, HeuristicFunction heuristicFunction) {
         super(value);
         this.heuristicFunction = heuristicFunction;
     }
@@ -32,7 +32,7 @@ public class HeuristicVertexInSearch extends Vertex {
         List<GraphableValue> adjecntValues = this.getValue().getAdjecntValues();
         List<Vertex> adjecntVertices = new ArrayList<Vertex>();
         for (GraphableValue adjecntValue : adjecntValues) {
-            adjecntVertices.add(new HeuristicVertexInSearch(adjecntValue, this.heuristicFunction));
+            adjecntVertices.add(new HeuristicVertex(adjecntValue, this.heuristicFunction));
         }
 
         return adjecntVertices;

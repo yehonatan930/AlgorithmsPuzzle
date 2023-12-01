@@ -6,16 +6,16 @@ import DataStructures.GraphableValue;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VertexInColoredSearch extends Vertex {
+public class ColoredVertex extends Vertex {
     COLORS color;
-    
-    public VertexInColoredSearch(GraphableValue value) {
+
+    public ColoredVertex(GraphableValue value) {
         super(value);
         this.color = COLORS.WHITE;
     }
 
 
-    public VertexInColoredSearch(GraphableValue value, int distanceFromRoot, Vertex priorVertex, COLORS color) {
+    public ColoredVertex(GraphableValue value, int distanceFromRoot, Vertex priorVertex, COLORS color) {
         super(value, distanceFromRoot, priorVertex);
         this.color = color;
     }
@@ -33,7 +33,7 @@ public class VertexInColoredSearch extends Vertex {
         List<GraphableValue> adjecntValues = this.getValue().getAdjecntValues();
         List<Vertex> adjecntVertices = new ArrayList<Vertex>();
         for (GraphableValue adjecntValue : adjecntValues) {
-            adjecntVertices.add(new VertexInColoredSearch(adjecntValue));
+            adjecntVertices.add(new ColoredVertex(adjecntValue));
         }
 
         return adjecntVertices;

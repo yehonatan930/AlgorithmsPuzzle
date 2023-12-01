@@ -11,53 +11,53 @@ public class Searches {
     public static HeuristicFunction manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
     public static HeuristicFunction dijkstra = value -> 0;
 
-    public static Graph<VertexInColoredSearch> BFS(GraphableValue root, GraphableValue goal) {
-        Graph<VertexInColoredSearch> graph = new Graph<VertexInColoredSearch>(new VertexInColoredSearch(root));
+    public static Graph<ColoredVertex> BFS(GraphableValue root, GraphableValue goal) {
+        Graph<ColoredVertex> graph = new Graph<ColoredVertex>(new ColoredVertex(root));
 
-        Queue<VertexInColoredSearch> queue = new LinkedList<VertexInColoredSearch>();
-        queue.add(new VertexInColoredSearch(root));
+        Queue<ColoredVertex> queue = new LinkedList<ColoredVertex>();
+        queue.add(new ColoredVertex(root));
 
         while (!queue.isEmpty()) {
-            VertexInColoredSearch vertexInColoredSearch = queue.poll();
+            ColoredVertex coloredVertex = queue.poll();
 
-            if (vertexInColoredSearch.getValue().equals(goal)) {
+            if (coloredVertex.getValue().equals(goal)) {
                 // Goal reached
                 break;
             }
 
-            List<VertexInColoredSearch> adjecntVertices = graph.getAndFillAdjVertices(vertexInColoredSearch);
+            List<ColoredVertex> adjecntVertices = graph.getAndFillAdjVertices(coloredVertex);
 
-            for (VertexInColoredSearch v : adjecntVertices) {
+            for (ColoredVertex v : adjecntVertices) {
                 if (v.getColor() == COLORS.WHITE) {
                     v.setColor(COLORS.GRAY);
-                    v.setDistanceFromRoot(vertexInColoredSearch.getDistanceFromRoot() + 1);
-                    v.setPriorVertex(vertexInColoredSearch);
+                    v.setDistanceFromRoot(coloredVertex.getDistanceFromRoot() + 1);
+                    v.setPriorVertex(coloredVertex);
                     queue.add(v);
                 }
             }
-            vertexInColoredSearch.setColor(COLORS.BLACK);
+            coloredVertex.setColor(COLORS.BLACK);
         }
 
         return graph;
     }
 
-    public static Graph<HeuristicVertexInSearch> AStar(GraphableValue start, GraphableValue goal, HeuristicFunction heuristicFunction) {
-        Graph<HeuristicVertexInSearch> graph = new Graph<HeuristicVertexInSearch>(new HeuristicVertexInSearch(start, heuristicFunction));
+    public static Graph<HeuristicVertex> AStar(GraphableValue start, GraphableValue goal, HeuristicFunction heuristicFunction) {
+        Graph<HeuristicVertex> graph = new Graph<HeuristicVertex>(new HeuristicVertex(start, heuristicFunction));
 
-        PriorityQueue<HeuristicVertexInSearch> openSet = new PriorityQueue<>(Comparator.comparingInt(HeuristicVertexInSearch::getHeuristicDistanceFromRootPlusDistanceFromRoot));
-        openSet.add(new HeuristicVertexInSearch(start, heuristicFunction));
+        PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(Comparator.comparingInt(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
+        openSet.add(new HeuristicVertex(start, heuristicFunction));
 
         while (!openSet.isEmpty()) {
-            HeuristicVertexInSearch currentVertex = openSet.poll();
+            HeuristicVertex currentVertex = openSet.poll();
 
             if (currentVertex.getValue().equals(goal)) {
                 // Goal reached
                 break;
             }
 
-            List<HeuristicVertexInSearch> adjecntVertices = graph.getAndFillAdjVertices(currentVertex);
+            List<HeuristicVertex> adjecntVertices = graph.getAndFillAdjVertices(currentVertex);
 
-            for (HeuristicVertexInSearch neighbor : adjecntVertices) {
+            for (HeuristicVertex neighbor : adjecntVertices) {
                 if (currentVertex.relax(neighbor, graph.getWeight(currentVertex, neighbor))) {
                     if (!openSet.contains(neighbor)) {
                         openSet.add(neighbor);
