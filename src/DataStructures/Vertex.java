@@ -1,14 +1,12 @@
-package Algorithms;
-
-import DataStructures.GraphableValue;
+package DataStructures;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Vertex {
-    GraphableValue value;
-    int distanceFromRoot;
-    Vertex priorVertex;
+    protected GraphableValue value;
+    protected int distanceFromRoot;
+    protected Vertex priorVertex;
 
 
     public Vertex(GraphableValue value) {

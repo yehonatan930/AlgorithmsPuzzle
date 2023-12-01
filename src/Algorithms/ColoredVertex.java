@@ -2,6 +2,7 @@ package Algorithms;
 
 import DataStructures.COLORS;
 import DataStructures.GraphableValue;
+import DataStructures.Vertex;
 
 import java.util.ArrayList;
 import java.util.List;
