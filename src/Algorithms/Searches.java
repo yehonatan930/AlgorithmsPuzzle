@@ -3,6 +3,7 @@ package Algorithms;
 import DataStructures.COLORS;
 import DataStructures.Graph;
 import DataStructures.GraphableValue;
+import IO.DataPerRun;
 
 import java.util.*;
 
@@ -27,7 +28,7 @@ public class Searches {
 
             if (u.getValue().equals(goal)) {
                 // Goal reached
-                return new DataPerRun(System.currentTimeMillis() - start, graph.getAdjecntVerticesPerVertex().keySet().size(), new Route(rootVertex, u));
+                return new DataPerRun(System.currentTimeMillis() - start, graph.getAdjecntVerticesPerVertex().keySet().size(), new Route(rootVertex, u).getRouteLength());
             }
 
             List<ColoredVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(u);
@@ -60,7 +61,7 @@ public class Searches {
 
             if (u.getValue().equals(goal)) {
 
-                return new DataPerRun(System.currentTimeMillis() - start, graph.getAdjecntVerticesPerVertex().keySet().size(), new Route(rootVertex, u));
+                return new DataPerRun(System.currentTimeMillis() - start, graph.getAdjecntVerticesPerVertex().keySet().size(), new Route(rootVertex, u).getRouteLength());
             }
 
             List<HeuristicVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(u);

@@ -1,14 +1,14 @@
-package Algorithms;
+package IO;
 
 public class DataPerRun {
     long durationInMilliseconds;
     int numberOfVerticesDiscovered;
-    Route route;
+    int routeLength;
 
-    public DataPerRun(long durationInMilliseconds, int numberOfVerticesDiscovered, Route route) {
+    public DataPerRun(long durationInMilliseconds, int numberOfVerticesDiscovered, int routeLength) {
         this.durationInMilliseconds = durationInMilliseconds;
         this.numberOfVerticesDiscovered = numberOfVerticesDiscovered;
-        this.route = route;
+        this.routeLength = routeLength;
     }
 
 }
