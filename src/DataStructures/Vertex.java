@@ -45,12 +45,12 @@ public class Vertex {
         this.priorVertex = priorVertex;
     }
 
-    public boolean relax(Vertex vertex, int weight) {
+    public boolean relax(Vertex other, int weight) {
         int tentativeDistance = this.getDistanceFromRoot() + weight;
 
-        if (tentativeDistance < vertex.getDistanceFromRoot()) {
-            vertex.setDistanceFromRoot(tentativeDistance);
-            vertex.setPriorVertex(this);
+        if (tentativeDistance < other.getDistanceFromRoot()) {
+            other.setDistanceFromRoot(tentativeDistance);
+            other.setPriorVertex(this);
 
             return true;
         }

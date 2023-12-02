@@ -13,7 +13,9 @@ public class Searches {
 
     public static HeuristicFunction bad = value -> (int) (Math.random() * 10);
 
-    public static Graph<ColoredVertex> BFS(GraphableValue root, GraphableValue goal) {
+    public static DataPerRun BFS(GraphableValue root, GraphableValue goal) {
+        long start = System.currentTimeMillis();
+
         Graph<ColoredVertex> graph = new Graph<ColoredVertex>(new ColoredVertex(root));
 
         Queue<ColoredVertex> queue = new LinkedList<ColoredVertex>();
@@ -21,30 +23,32 @@ public class Searches {
         queue.add(rootVertex);
 
         while (!queue.isEmpty()) {
-            ColoredVertex coloredVertex = queue.poll();
+            ColoredVertex u = queue.poll();
 
-            if (coloredVertex.getValue().equals(goal)) {
+            if (u.getValue().equals(goal)) {
                 // Goal reached
-                break;
+                return new DataPerRun(System.currentTimeMillis() - start, graph.getAdjecntVerticesPerVertex().keySet().size(), new Route(rootVertex, u));
             }
 
-            List<ColoredVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(coloredVertex);
+            List<ColoredVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(u);
 
             for (ColoredVertex v : adjecntVertices) {
                 if (v.getColor() == COLORS.WHITE) {
                     v.setColor(COLORS.GRAY);
-                    v.setDistanceFromRoot(coloredVertex.getDistanceFromRoot() + 1);
-                    v.setPriorVertex(coloredVertex);
+                    v.setDistanceFromRoot(u.getDistanceFromRoot() + 1);
+                    v.setPriorVertex(u);
                     queue.add(v);
                 }
             }
-            coloredVertex.setColor(COLORS.BLACK);
+            u.setColor(COLORS.BLACK);
         }
 
-        return graph;
+        return null;
     }
 
-    public static Graph<HeuristicVertex> AStar(GraphableValue root, GraphableValue goal, HeuristicFunction heuristicFunction) {
+    public static DataPerRun AStar(GraphableValue root, GraphableValue goal, HeuristicFunction heuristicFunction) {
+        long start = System.currentTimeMillis();
+
         Graph<HeuristicVertex> graph = new Graph<HeuristicVertex>(new HeuristicVertex(root, heuristicFunction));
 
         PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(Comparator.comparingInt(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
@@ -52,24 +56,22 @@ public class Searches {
         openSet.add(rootVertex);
 
         while (!openSet.isEmpty()) {
-            HeuristicVertex currentVertex = openSet.poll();
+            HeuristicVertex u = openSet.poll();
 
-            if (currentVertex.getValue().equals(goal)) {
-                // Goal reached
-                break;
+            if (u.getValue().equals(goal)) {
+
+                return new DataPerRun(System.currentTimeMillis() - start, graph.getAdjecntVerticesPerVertex().keySet().size(), new Route(rootVertex, u));
             }
 
-            List<HeuristicVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(currentVertex);
+            List<HeuristicVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(u);
 
-            for (HeuristicVertex neighbor : adjecntVertices) {
-                if (currentVertex.relax(neighbor, graph.getWeight(currentVertex, neighbor))) {
-                    if (!openSet.contains(neighbor)) {
-                        openSet.add(neighbor);
-                    }
+            for (HeuristicVertex v : adjecntVertices) {
+                if (u.relax(v, graph.getWeight(u, v)) && !openSet.contains(v)) {
+                    openSet.add(v);
                 }
             }
         }
 
-        return graph;
+        return null;
     }
 }
