@@ -67,17 +67,6 @@ public class Graph<V extends Vertex> {
         return this.getAdjVerticesOfVertex(vertex);
     }
 
-    public V moveRandomly(int n) {
-        V currentVertex = this.adjecntVerticesPerVertex.keySet().iterator().next(); // get first vertex
-        for (int i = 0; i < n; i++) {
-            List<V> adjecntVertices = this.getAndFillAdjVerticesOfVertex(currentVertex);
-            int randomIndex = (int) (Math.random() * adjecntVertices.size());
-            currentVertex = adjecntVertices.get(randomIndex);
-        }
-        return currentVertex;
-    }
-
-
     public void buildGraphAroundVertex(V vertex) {
         if (vertex == null) {
             return;

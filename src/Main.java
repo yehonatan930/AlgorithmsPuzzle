@@ -1,5 +1,3 @@
-import DataStructures.Graph;
-import DataStructures.Vertex;
 import PuzzleClasses.BOARD_SIZES;
 import PuzzleClasses.Board;
 
@@ -10,9 +8,7 @@ public class Main {
 //        Board board = IO.inputBoard();
 //        System.out.println(board);
 
-        Graph<Vertex> graph = new Graph<Vertex>(new Vertex(Board.getIdealBoard(BOARD_SIZES.A)));
-
-        Board board = (Board) graph.moveRandomly(40).getValue();
+        Board board = Board.getIdealBoard(BOARD_SIZES.A).moveRandomly(40);
         System.out.println(board);
     }
 }

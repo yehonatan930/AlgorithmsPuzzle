@@ -152,6 +152,16 @@ public class Board implements GraphableValue {
         return adjecntValues;
     }
 
+    public Board moveRandomly(int n) {
+        Board currentBoard = this;
+        for (int i = 0; i < n; i++) {
+            List<GraphableValue> adjecntValues = currentBoard.getAdjecntValues();
+            int randomIndex = (int) (Math.random() * adjecntValues.size());
+            currentBoard = (Board) adjecntValues.get(randomIndex);
+        }
+        return currentBoard;
+    }
+
     @Override
     public boolean isIdealValue() {
         Board idealBoard = Board.getIdealBoard(this.size);
