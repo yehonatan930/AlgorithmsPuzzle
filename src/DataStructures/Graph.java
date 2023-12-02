@@ -57,20 +57,20 @@ public class Graph<V extends Vertex> {
     }
 
 
-    public List<V> getAdjVertices(V vertex) {
+    public List<V> getAdjVerticesOfVertex(V vertex) {
         return this.adjecntVerticesPerVertex.get(vertex);
     }
 
-    public List<V> getAndFillAdjVertices(V vertex) {
+    public List<V> getAndFillAdjVerticesOfVertex(V vertex) {
         this.buildGraphAroundVertex(vertex);
 
-        return this.getAdjVertices(vertex);
+        return this.getAdjVerticesOfVertex(vertex);
     }
 
     public V moveRandomly(int n) {
         V currentVertex = this.adjecntVerticesPerVertex.keySet().iterator().next(); // get first vertex
         for (int i = 0; i < n; i++) {
-            List<V> adjecntVertices = this.getAndFillAdjVertices(currentVertex);
+            List<V> adjecntVertices = this.getAndFillAdjVerticesOfVertex(currentVertex);
             int randomIndex = (int) (Math.random() * adjecntVertices.size());
             currentVertex = adjecntVertices.get(randomIndex);
         }

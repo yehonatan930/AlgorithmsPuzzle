@@ -14,13 +14,7 @@ public class ColoredVertex extends Vertex {
         super(value);
         this.color = COLORS.WHITE;
     }
-
-
-    public ColoredVertex(GraphableValue value, int distanceFromRoot, Vertex priorVertex, COLORS color) {
-        super(value, distanceFromRoot, priorVertex);
-        this.color = color;
-    }
-
+    
     public COLORS getColor() {
         return this.color;
     }

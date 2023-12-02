@@ -8,13 +8,7 @@ import java.util.List;
 
 public class HeuristicVertex extends Vertex {
     HeuristicFunction heuristicFunction;
-
-
-    public HeuristicVertex(GraphableValue value, int distanceFromRoot, HeuristicVertex priorVertex, HeuristicFunction heuristicFunction) {
-        super(value, distanceFromRoot, priorVertex);
-        this.heuristicFunction = heuristicFunction;
-    }
-
+    
     public HeuristicVertex(GraphableValue value, HeuristicFunction heuristicFunction) {
         super(value);
         this.heuristicFunction = heuristicFunction;

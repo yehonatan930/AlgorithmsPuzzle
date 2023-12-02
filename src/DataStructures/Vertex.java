@@ -11,7 +11,7 @@ public class Vertex {
 
     public Vertex(GraphableValue value) {
         this.value = value;
-        this.distanceFromRoot = 0;
+        this.distanceFromRoot = Integer.MAX_VALUE;
         this.priorVertex = null;
     }
 

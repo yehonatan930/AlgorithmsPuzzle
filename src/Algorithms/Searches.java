@@ -17,7 +17,8 @@ public class Searches {
         Graph<ColoredVertex> graph = new Graph<ColoredVertex>(new ColoredVertex(root));
 
         Queue<ColoredVertex> queue = new LinkedList<ColoredVertex>();
-        queue.add(new ColoredVertex(root));
+        ColoredVertex rootVertex = new ColoredVertex(root);
+        queue.add(rootVertex);
 
         while (!queue.isEmpty()) {
             ColoredVertex coloredVertex = queue.poll();
@@ -27,7 +28,7 @@ public class Searches {
                 break;
             }
 
-            List<ColoredVertex> adjecntVertices = graph.getAndFillAdjVertices(coloredVertex);
+            List<ColoredVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(coloredVertex);
 
             for (ColoredVertex v : adjecntVertices) {
                 if (v.getColor() == COLORS.WHITE) {
@@ -43,11 +44,12 @@ public class Searches {
         return graph;
     }
 
-    public static Graph<HeuristicVertex> AStar(GraphableValue start, GraphableValue goal, HeuristicFunction heuristicFunction) {
-        Graph<HeuristicVertex> graph = new Graph<HeuristicVertex>(new HeuristicVertex(start, heuristicFunction));
+    public static Graph<HeuristicVertex> AStar(GraphableValue root, GraphableValue goal, HeuristicFunction heuristicFunction) {
+        Graph<HeuristicVertex> graph = new Graph<HeuristicVertex>(new HeuristicVertex(root, heuristicFunction));
 
         PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(Comparator.comparingInt(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
-        openSet.add(new HeuristicVertex(start, heuristicFunction));
+        HeuristicVertex rootVertex = new HeuristicVertex(root, heuristicFunction);
+        openSet.add(rootVertex);
 
         while (!openSet.isEmpty()) {
             HeuristicVertex currentVertex = openSet.poll();
@@ -57,7 +59,7 @@ public class Searches {
                 break;
             }
 
-            List<HeuristicVertex> adjecntVertices = graph.getAndFillAdjVertices(currentVertex);
+            List<HeuristicVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(currentVertex);
 
             for (HeuristicVertex neighbor : adjecntVertices) {
                 if (currentVertex.relax(neighbor, graph.getWeight(currentVertex, neighbor))) {
