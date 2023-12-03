@@ -11,4 +11,12 @@ public class DataPerRun {
         this.routeLength = routeLength;
     }
 
+    @Override
+    public String toString() {
+        return "DataPerRun{" +
+                "durationInMilliseconds=" + durationInMilliseconds +
+                ", numberOfVerticesDiscovered=" + numberOfVerticesDiscovered +
+                ", routeLength=" + routeLength +
+                '}';
+    }
 }

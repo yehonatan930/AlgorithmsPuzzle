@@ -1,7 +1,7 @@
 package PuzzleClasses;
 
 public enum BOARD_SIZES {
-    A(4), B(5);
+    FIFTEEN(4), TWENTY_FOUR(5);
 
     private final int numVal;
 

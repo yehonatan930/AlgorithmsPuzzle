@@ -8,38 +8,59 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestResult {
-    final static int NUMBER_OF_MOVES = 5000;
+    final static int NUMBER_OF_MOVES = 20;
     BOARD_SIZES boardSize;
     List<Board> boards;
 
-    List<DataPerRun> BFSDataPerRuns = new ArrayList<DataPerRun>();
-    List<DataPerRun> DijkistraDataPerRuns = new ArrayList<DataPerRun>();
-    List<DataPerRun> AStarManhattenDataPerRuns = new ArrayList<DataPerRun>();
-    List<DataPerRun> AStarBadDataPerRuns = new ArrayList<DataPerRun>();
+    List<DataPerRun> BFSDataPerRuns = new ArrayList<>();
+    List<DataPerRun> DijkstraDataPerRuns = new ArrayList<>();
+    List<DataPerRun> AStarManhattanDataPerRuns = new ArrayList<>();
+    List<DataPerRun> AStarBadDataPerRuns = new ArrayList<>();
 
     public TestResult(int numberOfBoards, BOARD_SIZES boardSize) {
         this.boardSize = boardSize;
         this.boards = generateBoards(numberOfBoards, boardSize);
+        System.out.println("Generated " + numberOfBoards + " boards of size " + boardSize);
     }
 
     public void runTests() {
-        for (Board board : this.boards) {
+        List<Board> boardList = this.boards;
+        for (int i = 0; i < boardList.size(); i++) {
+            Board board = boardList.get(i);
+            System.out.println("Starting board " + i);
+
+            System.out.println("Starting BFS...");
+
             DataPerRun BFSdataPerRun = Searches.BFS(board, Board.getIdealBoard(this.boardSize));
             this.addBFSDataPerRun(BFSdataPerRun);
 
+            System.out.println("BFS done");
+
+            System.out.println("Starting Dijkstra...");
+
             DataPerRun DijkistraDataPerRun = Searches.AStar(board, Board.getIdealBoard(this.boardSize), Searches.dijkstra);
-            this.addDijkistraDataPerRun(DijkistraDataPerRun);
+            this.addDijkstraDataPerRun(DijkistraDataPerRun);
+
+            System.out.println("Dijkstra done");
+
+            System.out.println("Starting AStarManhattan...");
 
             DataPerRun AStarManhattenDataPerRun = Searches.AStar(board, Board.getIdealBoard(this.boardSize), Searches.manhattan);
-            this.addAStarManhattenDataPerRun(AStarManhattenDataPerRun);
+            this.addAStarManhattanDataPerRun(AStarManhattenDataPerRun);
+
+            System.out.println("AStarManhattan done");
+
+            System.out.println("Starting AStarBad...");
 
             DataPerRun AStarBadDataPerRun = Searches.AStar(board, Board.getIdealBoard(this.boardSize), Searches.bad);
             this.addAStarBadDataPerRun(AStarBadDataPerRun);
+
+            System.out.println("AStarBad done");
         }
     }
 
     public List<Board> generateBoards(int numberOfBoards, BOARD_SIZES boardSize) {
-        List<Board> boards = new ArrayList<Board>();
+        List<Board> boards = new ArrayList<>();
         for (int i = 0; i < numberOfBoards; i++) {
             Board board = Board.getIdealBoard(boardSize).moveRandomly(NUMBER_OF_MOVES);
             boards.add(board);
@@ -51,12 +72,12 @@ public class TestResult {
         this.BFSDataPerRuns.add(dataPerRun);
     }
 
-    public void addDijkistraDataPerRun(DataPerRun dataPerRun) {
-        this.DijkistraDataPerRuns.add(dataPerRun);
+    public void addDijkstraDataPerRun(DataPerRun dataPerRun) {
+        this.DijkstraDataPerRuns.add(dataPerRun);
     }
 
-    public void addAStarManhattenDataPerRun(DataPerRun dataPerRun) {
-        this.AStarManhattenDataPerRuns.add(dataPerRun);
+    public void addAStarManhattanDataPerRun(DataPerRun dataPerRun) {
+        this.AStarManhattanDataPerRuns.add(dataPerRun);
     }
 
     public void addAStarBadDataPerRun(DataPerRun dataPerRun) {
@@ -86,15 +107,15 @@ public class TestResult {
         int averageNumberOfVerticesDiscovered = 0;
         int averageRouteLength = 0;
 
-        for (DataPerRun dataPerRun : this.DijkistraDataPerRuns) {
+        for (DataPerRun dataPerRun : this.DijkstraDataPerRuns) {
             averageDuration += dataPerRun.durationInMilliseconds;
             averageNumberOfVerticesDiscovered += dataPerRun.numberOfVerticesDiscovered;
             averageRouteLength += dataPerRun.routeLength;
         }
 
-        averageDuration /= this.DijkistraDataPerRuns.size();
-        averageNumberOfVerticesDiscovered /= this.DijkistraDataPerRuns.size();
-        averageRouteLength /= this.DijkistraDataPerRuns.size();
+        averageDuration /= this.DijkstraDataPerRuns.size();
+        averageNumberOfVerticesDiscovered /= this.DijkstraDataPerRuns.size();
+        averageRouteLength /= this.DijkstraDataPerRuns.size();
 
         return new DataPerRun(averageDuration, averageNumberOfVerticesDiscovered, averageRouteLength);
     }
@@ -104,15 +125,15 @@ public class TestResult {
         int averageNumberOfVerticesDiscovered = 0;
         int averageRouteLength = 0;
 
-        for (DataPerRun dataPerRun : this.AStarManhattenDataPerRuns) {
+        for (DataPerRun dataPerRun : this.AStarManhattanDataPerRuns) {
             averageDuration += dataPerRun.durationInMilliseconds;
             averageNumberOfVerticesDiscovered += dataPerRun.numberOfVerticesDiscovered;
             averageRouteLength += dataPerRun.routeLength;
         }
 
-        averageDuration /= this.AStarManhattenDataPerRuns.size();
-        averageNumberOfVerticesDiscovered /= this.AStarManhattenDataPerRuns.size();
-        averageRouteLength /= this.AStarManhattenDataPerRuns.size();
+        averageDuration /= this.AStarManhattanDataPerRuns.size();
+        averageNumberOfVerticesDiscovered /= this.AStarManhattanDataPerRuns.size();
+        averageRouteLength /= this.AStarManhattanDataPerRuns.size();
 
         return new DataPerRun(averageDuration, averageNumberOfVerticesDiscovered, averageRouteLength);
     }
@@ -133,5 +154,16 @@ public class TestResult {
         averageRouteLength /= this.AStarBadDataPerRuns.size();
 
         return new DataPerRun(averageDuration, averageNumberOfVerticesDiscovered, averageRouteLength);
+    }
+
+    @Override
+    public String toString() {
+        return "TestResult{" +
+                "boardSize= " + boardSize + ", " + NUMBER_OF_MOVES + "moves away from ideal Board" +
+                "\nBFS Average DataPerRuns=" + this.getBFSAverageDataPerRun().toString() +
+                "\nDijkstra Average DataPerRuns=" + this.getDijkistraAverageDataPerRun().toString() +
+                "\nAStarManhattan Average DataPerRuns=" + this.getAStarManhattenAverageDataPerRun().toString() +
+                "\nAStarBad Average DataPerRuns=" + this.getAStarBadAverageDataPerRun().toString() +
+                "\n}";
     }
 }

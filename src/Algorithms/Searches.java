@@ -17,10 +17,10 @@ public class Searches {
     public static DataPerRun BFS(GraphableValue root, GraphableValue goal) {
         long start = System.currentTimeMillis();
 
-        Graph<ColoredVertex> graph = new Graph<ColoredVertex>(new ColoredVertex(root));
+        ColoredVertex rootVertex = new ColoredVertex(root);
+        Graph<ColoredVertex> graph = new Graph<ColoredVertex>(rootVertex);
 
         Queue<ColoredVertex> queue = new LinkedList<ColoredVertex>();
-        ColoredVertex rootVertex = new ColoredVertex(root);
         queue.add(rootVertex);
 
         while (!queue.isEmpty()) {
@@ -50,10 +50,11 @@ public class Searches {
     public static DataPerRun AStar(GraphableValue root, GraphableValue goal, HeuristicFunction heuristicFunction) {
         long start = System.currentTimeMillis();
 
-        Graph<HeuristicVertex> graph = new Graph<HeuristicVertex>(new HeuristicVertex(root, heuristicFunction));
+        HeuristicVertex rootVertex = new HeuristicVertex(root, heuristicFunction);
+
+        Graph<HeuristicVertex> graph = new Graph<HeuristicVertex>(rootVertex);
 
         PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(Comparator.comparingInt(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
-        HeuristicVertex rootVertex = new HeuristicVertex(root, heuristicFunction);
         openSet.add(rootVertex);
 
         while (!openSet.isEmpty()) {

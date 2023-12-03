@@ -25,9 +25,9 @@ public class IO {
         System.out.println("Enter the size of the puzzle 15/24: ");
         int size = sc.nextInt();
         if (size == 15) {
-            return BOARD_SIZES.A;
+            return BOARD_SIZES.FIFTEEN;
         } else if (size == 24) {
-            return BOARD_SIZES.B;
+            return BOARD_SIZES.TWENTY_FOUR;
         } else {
             System.out.println("Invalid size. Please enter 15 or 24.");
             return inputPuzzleSize();
