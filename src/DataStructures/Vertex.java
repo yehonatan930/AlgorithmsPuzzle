@@ -21,12 +21,6 @@ public class Vertex {
         this.priorVertex = null;
     }
 
-    public Vertex(GraphableValue value, int distanceFromRoot, Vertex priorVertex) {
-        this.value = value;
-        this.distanceFromRoot = distanceFromRoot;
-        this.priorVertex = priorVertex;
-    }
-
     public GraphableValue getValue() {
         return value;
     }
@@ -64,8 +58,8 @@ public class Vertex {
     }
 
     public List<Vertex> getAdjecntVertices() {
-        List<GraphableValue> adjecntValues = this.getValue().getAdjecntValues();
-        List<Vertex> adjecntVertices = new ArrayList<Vertex>();
+        List<GraphableValue> adjecntValues = this.getValue().getAdjacentValues();
+        List<Vertex> adjecntVertices = new ArrayList<>();
         for (GraphableValue adjecntValue : adjecntValues) {
             adjecntVertices.add(new Vertex(adjecntValue));
         }

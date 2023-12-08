@@ -30,12 +30,12 @@ public class ColoredVertex extends Vertex {
 
     @Override
     public List<Vertex> getAdjecntVertices() {
-        List<GraphableValue> adjecntValues = this.getValue().getAdjecntValues();
-        List<Vertex> adjecntVertices = new ArrayList<Vertex>();
-        for (GraphableValue adjecntValue : adjecntValues) {
-            adjecntVertices.add(new ColoredVertex(adjecntValue));
+        List<GraphableValue> adjacentValues = this.getValue().getAdjacentValues();
+        List<Vertex> adjacentVertices = new ArrayList<>();
+        for (GraphableValue adjacentValue : adjacentValues) {
+            adjacentVertices.add(new ColoredVertex(adjacentValue));
         }
 
-        return adjecntVertices;
+        return adjacentVertices;
     }
 }

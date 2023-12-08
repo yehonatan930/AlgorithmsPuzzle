@@ -72,9 +72,7 @@ public class Board implements GraphableValue {
     public int[][] duplicateBoard() {
         int[][] duplicateBoard = new int[this.size.getNumVal()][this.size.getNumVal()];
         for (int i = 0; i < this.size.getNumVal(); i++) {
-            for (int j = 0; j < this.size.getNumVal(); j++) {
-                duplicateBoard[i][j] = this.board[i][j];
-            }
+            System.arraycopy(this.board[i], 0, duplicateBoard[i], 0, this.size.getNumVal());
         }
         return duplicateBoard;
     }
@@ -129,9 +127,9 @@ public class Board implements GraphableValue {
     }
 
     @Override
-    public List<GraphableValue> getAdjecntValues() {
+    public List<GraphableValue> getAdjacentValues() {
 
-        List<GraphableValue> adjecntValues = new ArrayList<GraphableValue>();
+        List<GraphableValue> adjecntValues = new ArrayList<>();
         Board boardAfterMovingEmptyPieceUp = this.getBoardAfterMovingEmptyPieceUp();
         Board boardAfterMovingEmptyPieceDown = this.getBoardAfterMovingEmptyPieceDown();
         Board boardAfterMovingEmptyPieceLeft = this.getBoardAfterMovingEmptyPieceLeft();
@@ -155,24 +153,11 @@ public class Board implements GraphableValue {
     public Board moveRandomly(int n) {
         Board currentBoard = this;
         for (int i = 0; i < n; i++) {
-            List<GraphableValue> adjecntValues = currentBoard.getAdjecntValues();
+            List<GraphableValue> adjecntValues = currentBoard.getAdjacentValues();
             int randomIndex = (int) (Math.random() * adjecntValues.size());
             currentBoard = (Board) adjecntValues.get(randomIndex);
         }
         return currentBoard;
-    }
-
-    @Override
-    public boolean isIdealValue() {
-        Board idealBoard = Board.getIdealBoard(this.size);
-        for (int i = 0; i < this.size.getNumVal(); i++) {
-            for (int j = 0; j < this.size.getNumVal(); j++) {
-                if (this.board[i][j] != idealBoard.getBoard()[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     public String toString() {
@@ -202,20 +187,6 @@ public class Board implements GraphableValue {
         int result = this.size.hashCode();
         result = 31 * result + Arrays.deepHashCode(this.board);
         return result;
-    }
-
-    @Override
-    public int getHemingDistanceFromIdealValue() {
-        int hemingDistance = 0;
-        Board idealBoard = Board.getIdealBoard(this.size);
-        for (int i = 0; i < this.size.getNumVal(); i++) {
-            for (int j = 0; j < this.size.getNumVal(); j++) {
-                if (this.board[i][j] != idealBoard.getBoard()[i][j]) {
-                    hemingDistance++;
-                }
-            }
-        }
-        return hemingDistance;
     }
 
     public int[] getPositionInBoard(int value) {

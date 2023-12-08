@@ -3,11 +3,7 @@ package DataStructures;
 import java.util.List;
 
 public interface GraphableValue {
-    public List<GraphableValue> getAdjecntValues();
+    List<GraphableValue> getAdjacentValues();
 
-    public int getHemingDistanceFromIdealValue();
-
-    public int getManhattanDistanceFromIdealValue();
-
-    public boolean isIdealValue();
+    int getManhattanDistanceFromIdealValue();
 }

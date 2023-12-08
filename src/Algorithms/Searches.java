@@ -8,7 +8,6 @@ import IO.DataPerRun;
 import java.util.*;
 
 public class Searches {
-    public static HeuristicFunction heming = GraphableValue::getHemingDistanceFromIdealValue;
     public static HeuristicFunction manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
     public static HeuristicFunction dijkstra = value -> 0;
 
@@ -18,9 +17,9 @@ public class Searches {
         long start = System.currentTimeMillis();
 
         ColoredVertex rootVertex = new ColoredVertex(root, 0, COLORS.GRAY);
-        Graph<ColoredVertex> graph = new Graph<ColoredVertex>(rootVertex);
+        Graph<ColoredVertex> graph = new Graph<>(rootVertex);
 
-        Queue<ColoredVertex> queue = new LinkedList<ColoredVertex>();
+        Queue<ColoredVertex> queue = new LinkedList<>();
         queue.add(rootVertex);
 
         while (!queue.isEmpty()) {
@@ -36,9 +35,9 @@ public class Searches {
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
-            List<ColoredVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(u);
+            List<ColoredVertex> adjacentVertices = graph.getAndFillAdjVerticesOfVertex(u);
 
-            for (ColoredVertex v : adjecntVertices) {
+            for (ColoredVertex v : adjacentVertices) {
                 if (v.getColor() == COLORS.WHITE) {
                     v.setColor(COLORS.GRAY);
                     v.setDistanceFromRoot(u.getDistanceFromRoot() + 1);
@@ -57,7 +56,7 @@ public class Searches {
 
         HeuristicVertex rootVertex = new HeuristicVertex(root, 0, heuristicFunction);
 
-        Graph<HeuristicVertex> graph = new Graph<HeuristicVertex>(rootVertex);
+        Graph<HeuristicVertex> graph = new Graph<>(rootVertex);
 
         PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(Comparator.comparingInt(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
         openSet.add(rootVertex);
@@ -73,9 +72,9 @@ public class Searches {
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
-            List<HeuristicVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(u);
+            List<HeuristicVertex> adjacentVertices = graph.getAndFillAdjVerticesOfVertex(u);
 
-            for (HeuristicVertex v : adjecntVertices) {
+            for (HeuristicVertex v : adjacentVertices) {
                 if (u.relax(v, graph.getWeight(u, v)) && !openSet.contains(v)) {
                     openSet.add(v);
                 }

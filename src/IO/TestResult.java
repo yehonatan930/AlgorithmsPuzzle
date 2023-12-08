@@ -23,41 +23,46 @@ public class TestResult {
         System.out.println("Generated " + numberOfBoards + " boards of size " + boardSize);
     }
 
+    private double getCurrentTimeFrom(long start) {
+        return (double) (System.currentTimeMillis() - start) / 1000;
+    }
+
     public void runTests() {
         Board idealBoard = Board.getIdealBoard(this.boardSize);
+        long start = System.currentTimeMillis();
 
         List<Board> boardList = this.boards;
         for (int i = 0; i < boardList.size(); i++) {
             Board board = boardList.get(i);
             System.out.println("Starting board " + i);
 
-            System.out.println("Starting BFS...");
+            System.out.println("\tStarting BFS... " + this.getCurrentTimeFrom(start));
 
             DataPerRun BFSdataPerRun = Searches.BFS(board, idealBoard);
             this.addBFSDataPerRun(BFSdataPerRun);
 
-            System.out.println("BFS done");
+            System.out.println("\tBFS done " + this.getCurrentTimeFrom(start));
 
-            System.out.println("Starting Dijkstra...");
+            System.out.println("\tStarting Dijkstra... " + this.getCurrentTimeFrom(start));
 
             DataPerRun DijkistraDataPerRun = Searches.AStar(board, idealBoard, Searches.dijkstra);
             this.addDijkstraDataPerRun(DijkistraDataPerRun);
 
-            System.out.println("Dijkstra done");
+            System.out.println("\tDijkstra done " + this.getCurrentTimeFrom(start));
 
-            System.out.println("Starting AStarManhattan...");
+            System.out.println("\tStarting AStarManhattan... " + this.getCurrentTimeFrom(start));
 
             DataPerRun AStarManhattenDataPerRun = Searches.AStar(board, idealBoard, Searches.manhattan);
             this.addAStarManhattanDataPerRun(AStarManhattenDataPerRun);
 
-            System.out.println("AStarManhattan done");
+            System.out.println("\tAStarManhattan done " + this.getCurrentTimeFrom(start));
 
-            System.out.println("Starting AStarBad...");
+            System.out.println("\tStarting AStarBad... " + this.getCurrentTimeFrom(start));
 
             DataPerRun AStarBadDataPerRun = Searches.AStar(board, idealBoard, Searches.bad);
             this.addAStarBadDataPerRun(AStarBadDataPerRun);
 
-            System.out.println("AStarBad done");
+            System.out.println("\tAStarBad done " + this.getCurrentTimeFrom(start));
         }
     }
 
@@ -161,11 +166,11 @@ public class TestResult {
     @Override
     public String toString() {
         return "TestResult{" +
-                "boardSize= " + this.boardSize + ", " + this.NUMBER_OF_MOVES + "moves away from ideal Board" +
-                "\nBFS Average DataPerRuns=" + this.getBFSAverageDataPerRun().toString() +
-                "\nDijkstra Average DataPerRuns=" + this.getDijkistraAverageDataPerRun().toString() +
-                "\nAStarManhattan Average DataPerRuns=" + this.getAStarManhattenAverageDataPerRun().toString() +
-                "\nAStarBad Average DataPerRuns=" + this.getAStarBadAverageDataPerRun().toString() +
+                "\n\tboardSize= " + this.boardSize + ", " + this.NUMBER_OF_MOVES + " moves away from ideal Board" +
+                "\n\t\tBFS Average DataPerRuns=" + this.getBFSAverageDataPerRun().toString() +
+                "\n\t\tDijkstra Average DataPerRuns=" + this.getDijkistraAverageDataPerRun().toString() +
+                "\n\t\tAStarManhattan Average DataPerRuns=" + this.getAStarManhattenAverageDataPerRun().toString() +
+                "\n\t\tAStarBad Average DataPerRuns=" + this.getAStarBadAverageDataPerRun().toString() +
                 "\n}";
     }
 }
