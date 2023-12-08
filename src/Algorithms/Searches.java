@@ -17,7 +17,7 @@ public class Searches {
     public static DataPerRun BFS(GraphableValue root, GraphableValue goal) {
         long start = System.currentTimeMillis();
 
-        ColoredVertex rootVertex = new ColoredVertex(root);
+        ColoredVertex rootVertex = new ColoredVertex(root, 0, COLORS.GRAY);
         Graph<ColoredVertex> graph = new Graph<ColoredVertex>(rootVertex);
 
         Queue<ColoredVertex> queue = new LinkedList<ColoredVertex>();
@@ -28,7 +28,12 @@ public class Searches {
 
             if (u.getValue().equals(goal)) {
                 // Goal reached
-                return new DataPerRun(System.currentTimeMillis() - start, graph.getAdjecntVerticesPerVertex().keySet().size(), new Route(rootVertex, u).getRouteLength());
+
+                long elapsedTime = System.currentTimeMillis() - start;
+                int numberOfVertices = graph.getAdjecntVerticesPerVertex().keySet().size();
+                int routeLength = new Route(rootVertex, u).getRouteLength();
+
+                return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
             List<ColoredVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(u);
@@ -50,7 +55,7 @@ public class Searches {
     public static DataPerRun AStar(GraphableValue root, GraphableValue goal, HeuristicFunction heuristicFunction) {
         long start = System.currentTimeMillis();
 
-        HeuristicVertex rootVertex = new HeuristicVertex(root, heuristicFunction);
+        HeuristicVertex rootVertex = new HeuristicVertex(root, 0, heuristicFunction);
 
         Graph<HeuristicVertex> graph = new Graph<HeuristicVertex>(rootVertex);
 
@@ -61,8 +66,11 @@ public class Searches {
             HeuristicVertex u = openSet.poll();
 
             if (u.getValue().equals(goal)) {
+                long elapsedTime = System.currentTimeMillis() - start;
+                int numberOfVertices = graph.getAdjecntVerticesPerVertex().keySet().size();
+                int routeLength = new Route(rootVertex, u).getRouteLength();
 
-                return new DataPerRun(System.currentTimeMillis() - start, graph.getAdjecntVerticesPerVertex().keySet().size(), new Route(rootVertex, u).getRouteLength());
+                return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
             List<HeuristicVertex> adjecntVertices = graph.getAndFillAdjVerticesOfVertex(u);
