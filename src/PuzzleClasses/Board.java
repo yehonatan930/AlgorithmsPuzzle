@@ -152,9 +152,9 @@ public class Board implements GraphableValue {
     public Board moveRandomly(int n) {
         Board currentBoard = this;
         for (int i = 0; i < n; i++) {
-            List<GraphableValue> adjecntValues = currentBoard.getAdjacentValues();
-            int randomIndex = (int) (Math.random() * adjecntValues.size());
-            currentBoard = (Board) adjecntValues.get(randomIndex);
+            List<GraphableValue> adjacentValues = currentBoard.getAdjacentValues();
+            int randomIndex = (int) (Math.random() * adjacentValues.size());
+            currentBoard = (Board) adjacentValues.get(randomIndex);
         }
         return currentBoard;
     }
