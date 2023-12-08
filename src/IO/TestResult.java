@@ -168,10 +168,10 @@ public class TestResult {
     public String toString() {
         return "TestResult{" +
                 "\n\tboardSize= " + this.boardSize + ", " + this.numberOfMoves + " moves away from ideal Board" +
-                "\n\t\tBFS Average DataPerRuns=" + this.getBFSAverageDataPerRun().toString() +
-                "\n\t\tDijkstra Average DataPerRuns=" + this.getDijkistraAverageDataPerRun().toString() +
-                "\n\t\tAStarManhattan Average DataPerRuns=" + this.getAStarManhattenAverageDataPerRun().toString() +
-                "\n\t\tAStarBad Average DataPerRuns=" + this.getAStarBadAverageDataPerRun().toString() +
+                "\n\t\tBFS Average DataPerRuns = " + this.getBFSAverageDataPerRun().toString() +
+                "\n\t\tDijkstra Average DataPerRuns = " + this.getDijkistraAverageDataPerRun().toString() +
+                "\n\t\tAStarManhattan Average DataPerRuns = " + this.getAStarManhattenAverageDataPerRun().toString() +
+                "\n\t\tAStarBad Average DataPerRuns = " + this.getAStarBadAverageDataPerRun().toString() +
                 "\n}";
     }
 }
