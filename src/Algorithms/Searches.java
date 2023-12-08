@@ -29,7 +29,7 @@ public class Searches {
                 // Goal reached
 
                 long elapsedTime = System.currentTimeMillis() - start;
-                int numberOfVertices = graph.getAdjecntVerticesPerVertex().keySet().size();
+                int numberOfVertices = graph.getAdjacentVerticesPerVertex().keySet().size();
                 int routeLength = rootVertex.getRouteLengthTo(u);
 
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
@@ -58,7 +58,8 @@ public class Searches {
 
         Graph<HeuristicVertex> graph = new Graph<>(rootVertex);
 
-        PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(Comparator.comparingInt(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
+        PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(
+                Comparator.comparingInt(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
         openSet.add(rootVertex);
 
         while (!openSet.isEmpty()) {
@@ -66,7 +67,7 @@ public class Searches {
 
             if (u.getValue().equals(goal)) {
                 long elapsedTime = System.currentTimeMillis() - start;
-                int numberOfVertices = graph.getAdjecntVerticesPerVertex().keySet().size();
+                int numberOfVertices = graph.getAdjacentVerticesPerVertex().keySet().size();
                 int routeLength = rootVertex.getRouteLengthTo(u);
 
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);

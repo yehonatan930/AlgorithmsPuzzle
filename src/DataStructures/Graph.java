@@ -7,58 +7,54 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Graph<V extends Vertex> {
-    private Map<V, List<V>> adjecntVerticesPerVertex;
+    private Map<V, List<V>> adjacentVerticesPerVertex;
 
     public Graph() {
-        this.adjecntVerticesPerVertex = new HashMap<V, List<V>>();
+        this.adjacentVerticesPerVertex = new HashMap<V, List<V>>();
     }
 
     public Graph(V vertex) {
-        this.adjecntVerticesPerVertex = new HashMap<V, List<V>>();
+        this.adjacentVerticesPerVertex = new HashMap<V, List<V>>();
         this.addV(vertex);
     }
 
-    public Graph(Map<V, List<V>> adjecntVerticesPerVertex) {
-        this.adjecntVerticesPerVertex = adjecntVerticesPerVertex;
+    public Graph(Map<V, List<V>> adjacentVerticesPerVertex) {
+        this.adjacentVerticesPerVertex = adjacentVerticesPerVertex;
     }
 
-    public Map<V, List<V>> getAdjecntVerticesPerVertex() {
-        return adjecntVerticesPerVertex;
+    public Map<V, List<V>> getAdjacentVerticesPerVertex() {
+        return adjacentVerticesPerVertex;
     }
 
-    public void setAdjecntVerticesPerVertex(Map<V, List<V>> adjecntVerticesPerVertex) {
-        this.adjecntVerticesPerVertex = adjecntVerticesPerVertex;
+    public void setAdjacentVerticesPerVertex(Map<V, List<V>> adjacentVerticesPerVertex) {
+        this.adjacentVerticesPerVertex = adjacentVerticesPerVertex;
     }
-
 
     public void addV(V vertex) {
-        this.adjecntVerticesPerVertex.putIfAbsent(vertex, new ArrayList<V>());
+        this.adjacentVerticesPerVertex.putIfAbsent(vertex, new ArrayList<V>());
     }
 
     public void removeV(V vertex) {
-        this.adjecntVerticesPerVertex.values().forEach(e -> e.remove(vertex));
-        this.adjecntVerticesPerVertex.remove(vertex);
+        this.adjacentVerticesPerVertex.values().forEach(e -> e.remove(vertex));
+        this.adjacentVerticesPerVertex.remove(vertex);
     }
-
 
     public void addEdge(V v1, V v2) {
-        this.adjecntVerticesPerVertex.get(v1).add(v2);
-        this.adjecntVerticesPerVertex.get(v2).add(v1);
+        this.adjacentVerticesPerVertex.get(v1).add(v2);
+        this.adjacentVerticesPerVertex.get(v2).add(v1);
     }
 
-
     public void removeEdge(V v1, V v2) {
-        List<V> eV1 = this.adjecntVerticesPerVertex.get(v1);
-        List<V> eV2 = this.adjecntVerticesPerVertex.get(v2);
+        List<V> eV1 = this.adjacentVerticesPerVertex.get(v1);
+        List<V> eV2 = this.adjacentVerticesPerVertex.get(v2);
         if (eV1 != null)
             eV1.remove(v2);
         if (eV2 != null)
             eV2.remove(v1);
     }
 
-
     public List<V> getAdjVerticesOfVertex(V vertex) {
-        return this.adjecntVerticesPerVertex.get(vertex);
+        return this.adjacentVerticesPerVertex.get(vertex);
     }
 
     public List<V> getAndFillAdjVerticesOfVertex(V vertex) {
@@ -76,14 +72,14 @@ public class Graph<V extends Vertex> {
             return;
         }
 
-        List<V> adjecntVertices = vertex.getAdjacentVertices().stream().map(v -> (V) v).collect(Collectors.toList());
+        List<V> adjacentVertices = vertex.getAdjacentVertices().stream().map(v -> (V) v).collect(Collectors.toList());
 
-        for (V adjecntVertex : adjecntVertices) {
-            boolean isVertexAlreadyInGraph = this.getAdjecntVerticesPerVertex().containsKey(adjecntVertex);
+        for (V adjacentVertex : adjacentVertices) {
+            boolean isVertexAlreadyInGraph = this.getAdjacentVerticesPerVertex().containsKey(adjacentVertex);
 
             if (!isVertexAlreadyInGraph) {
-                this.addV(adjecntVertex);
-                this.addEdge(vertex, adjecntVertex);
+                this.addV(adjacentVertex);
+                this.addEdge(vertex, adjacentVertex);
             }
         }
     }

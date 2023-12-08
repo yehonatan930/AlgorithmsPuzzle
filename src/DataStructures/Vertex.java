@@ -8,7 +8,6 @@ public class Vertex {
     protected int distanceFromRoot;
     protected Vertex priorVertex;
 
-
     public Vertex(GraphableValue value) {
         this.value = value;
         this.distanceFromRoot = Integer.MAX_VALUE - 999999;
@@ -72,7 +71,7 @@ public class Vertex {
         while (!current.equals(this)) {
             routeLength++;
             current = current.getPriorVertex();
-            if(current == null) {
+            if (current == null) {
                 return -1;
             }
         }
