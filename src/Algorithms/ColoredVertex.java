@@ -29,7 +29,7 @@ public class ColoredVertex extends Vertex {
     }
 
     @Override
-    public List<Vertex> getAdjecntVertices() {
+    public List<Vertex> getAdjacentVertices() {
         List<GraphableValue> adjacentValues = this.getValue().getAdjacentValues();
         List<Vertex> adjacentVertices = new ArrayList<>();
         for (GraphableValue adjacentValue : adjacentValues) {

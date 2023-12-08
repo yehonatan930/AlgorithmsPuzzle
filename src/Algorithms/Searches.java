@@ -30,7 +30,7 @@ public class Searches {
 
                 long elapsedTime = System.currentTimeMillis() - start;
                 int numberOfVertices = graph.getAdjecntVerticesPerVertex().keySet().size();
-                int routeLength = new Route(rootVertex, u).getRouteLength();
+                int routeLength = rootVertex.getRouteLengthTo(u);
 
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
@@ -67,7 +67,7 @@ public class Searches {
             if (u.getValue().equals(goal)) {
                 long elapsedTime = System.currentTimeMillis() - start;
                 int numberOfVertices = graph.getAdjecntVerticesPerVertex().keySet().size();
-                int routeLength = new Route(rootVertex, u).getRouteLength();
+                int routeLength = rootVertex.getRouteLengthTo(u);
 
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }

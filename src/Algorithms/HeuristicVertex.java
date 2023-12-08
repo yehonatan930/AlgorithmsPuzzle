@@ -28,14 +28,14 @@ public class HeuristicVertex extends Vertex {
     }
 
     @Override
-    public List<Vertex> getAdjecntVertices() {
-        List<GraphableValue> adjecntValues = this.getValue().getAdjacentValues();
-        List<Vertex> adjecntVertices = new ArrayList<>();
-        for (GraphableValue adjecntValue : adjecntValues) {
-            adjecntVertices.add(new HeuristicVertex(adjecntValue, this.heuristicFunction));
+    public List<Vertex> getAdjacentVertices() {
+        List<GraphableValue> adjacentValues = this.getValue().getAdjacentValues();
+        List<Vertex> adjacentVertices = new ArrayList<>();
+        for (GraphableValue adjacentValue : adjacentValues) {
+            adjacentVertices.add(new HeuristicVertex(adjacentValue, this.heuristicFunction));
         }
 
-        return adjecntVertices;
+        return adjacentVertices;
     }
 
 }

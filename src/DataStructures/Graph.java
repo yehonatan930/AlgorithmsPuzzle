@@ -76,7 +76,7 @@ public class Graph<V extends Vertex> {
             return;
         }
 
-        List<V> adjecntVertices = vertex.getAdjecntVertices().stream().map(v -> (V) v).collect(Collectors.toList());
+        List<V> adjecntVertices = vertex.getAdjacentVertices().stream().map(v -> (V) v).collect(Collectors.toList());
 
         for (V adjecntVertex : adjecntVertices) {
             boolean isVertexAlreadyInGraph = this.getAdjecntVerticesPerVertex().containsKey(adjecntVertex);

@@ -57,12 +57,25 @@ public class Vertex {
         return false;
     }
 
-    public List<Vertex> getAdjecntVertices() {
-        List<GraphableValue> adjecntValues = this.getValue().getAdjacentValues();
-        List<Vertex> adjecntVertices = new ArrayList<>();
-        for (GraphableValue adjecntValue : adjecntValues) {
-            adjecntVertices.add(new Vertex(adjecntValue));
+    public List<Vertex> getAdjacentVertices() {
+        List<GraphableValue> adjacentValues = this.getValue().getAdjacentValues();
+        List<Vertex> adjacentVertices = new ArrayList<>();
+        for (GraphableValue adjacentValue : adjacentValues) {
+            adjacentVertices.add(new Vertex(adjacentValue));
         }
-        return adjecntVertices;
+        return adjacentVertices;
+    }
+
+    public int getRouteLengthTo(Vertex goal) {
+        Vertex current = goal;
+        int routeLength = 0;
+        while (!current.equals(this)) {
+            routeLength++;
+            current = current.getPriorVertex();
+            if(current == null) {
+                return -1;
+            }
+        }
+        return routeLength + 1;
     }
 }
