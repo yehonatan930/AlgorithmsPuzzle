@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestResult {
-    final int NUMBER_OF_MOVES = 25;
     BOARD_SIZES boardSize;
+    int numberOfMoves;
     List<Board> boards;
 
     List<DataPerRun> BFSDataPerRuns = new ArrayList<>();
@@ -17,8 +17,9 @@ public class TestResult {
     List<DataPerRun> AStarManhattanDataPerRuns = new ArrayList<>();
     List<DataPerRun> AStarBadDataPerRuns = new ArrayList<>();
 
-    public TestResult(int numberOfBoards, BOARD_SIZES boardSize) {
+    public TestResult(int numberOfBoards, BOARD_SIZES boardSize, int numberOfMoves) {
         this.boardSize = boardSize;
+        this.numberOfMoves = numberOfMoves;
         this.boards = this.generateBoardsFromIdeal(numberOfBoards, boardSize);
         System.out.println("Generated " + numberOfBoards + " boards of size " + boardSize);
     }
@@ -36,28 +37,28 @@ public class TestResult {
             Board board = boardList.get(i);
             System.out.println("Starting board " + i);
 
-            System.out.println("\tStarting BFS... " + this.getCurrentTimeFrom(start));
+            System.out.println("\tStarting BFS... ");
 
             DataPerRun BFSdataPerRun = Searches.BFS(board, idealBoard);
             this.addBFSDataPerRun(BFSdataPerRun);
 
             System.out.println("\tBFS done " + this.getCurrentTimeFrom(start));
 
-            System.out.println("\tStarting Dijkstra... " + this.getCurrentTimeFrom(start));
+            System.out.println("\tStarting Dijkstra... ");
 
             DataPerRun DijkistraDataPerRun = Searches.AStar(board, idealBoard, Searches.dijkstra);
             this.addDijkstraDataPerRun(DijkistraDataPerRun);
 
             System.out.println("\tDijkstra done " + this.getCurrentTimeFrom(start));
 
-            System.out.println("\tStarting AStarManhattan... " + this.getCurrentTimeFrom(start));
+            System.out.println("\tStarting AStarManhattan... ");
 
             DataPerRun AStarManhattenDataPerRun = Searches.AStar(board, idealBoard, Searches.manhattan);
             this.addAStarManhattanDataPerRun(AStarManhattenDataPerRun);
 
             System.out.println("\tAStarManhattan done " + this.getCurrentTimeFrom(start));
 
-            System.out.println("\tStarting AStarBad... " + this.getCurrentTimeFrom(start));
+            System.out.println("\tStarting AStarBad... ");
 
             DataPerRun AStarBadDataPerRun = Searches.AStar(board, idealBoard, Searches.bad);
             this.addAStarBadDataPerRun(AStarBadDataPerRun);
@@ -69,7 +70,7 @@ public class TestResult {
     public List<Board> generateBoardsFromIdeal(int numberOfBoards, BOARD_SIZES boardSize) {
         List<Board> boards = new ArrayList<>();
         for (int i = 0; i < numberOfBoards; i++) {
-            Board board = Board.getIdealBoard(boardSize).moveRandomly(this.NUMBER_OF_MOVES);
+            Board board = Board.getIdealBoard(boardSize).moveRandomly(this.numberOfMoves);
             boards.add(board);
         }
         return boards;
@@ -166,7 +167,7 @@ public class TestResult {
     @Override
     public String toString() {
         return "TestResult{" +
-                "\n\tboardSize= " + this.boardSize + ", " + this.NUMBER_OF_MOVES + " moves away from ideal Board" +
+                "\n\tboardSize= " + this.boardSize + ", " + this.numberOfMoves + " moves away from ideal Board" +
                 "\n\t\tBFS Average DataPerRuns=" + this.getBFSAverageDataPerRun().toString() +
                 "\n\t\tDijkstra Average DataPerRuns=" + this.getDijkistraAverageDataPerRun().toString() +
                 "\n\t\tAStarManhattan Average DataPerRuns=" + this.getAStarManhattenAverageDataPerRun().toString() +

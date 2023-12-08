@@ -5,7 +5,7 @@ import PuzzleClasses.BOARD_SIZES;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        TestResult testResult = new TestResult(5, BOARD_SIZES.FIFTEEN);
+        TestResult testResult = new TestResult(1, BOARD_SIZES.FIFTEEN, 30);
         testResult.runTests();
         System.out.println();
         System.out.println(testResult);
