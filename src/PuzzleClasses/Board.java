@@ -32,12 +32,11 @@ public class Board implements GraphableValue {
         return new Board(size, idealBoard);
     }
 
-    public static void switchPieces(int[][] board, int row1, int col1, int row2, int col2) {
-        int temp = board[row1][col1];
-        board[row1][col1] = board[row2][col2];
-        board[row2][col2] = temp;
+    private void switchPieces(int row1, int col1, int row2, int col2) {
+        int temp = this.board[row1][col1];
+        this.board[row1][col1] = board[row2][col2];
+        this.board[row2][col2] = temp;
     }
-
 
     public BOARD_SIZES getSize() {
         return this.size;
@@ -69,61 +68,61 @@ public class Board implements GraphableValue {
         return null;
     }
 
-    public int[][] duplicateBoard() {
+    public Board duplicateBoard() {
         int[][] duplicateBoard = new int[this.size.getNumVal()][this.size.getNumVal()];
         for (int i = 0; i < this.size.getNumVal(); i++) {
             System.arraycopy(this.board[i], 0, duplicateBoard[i], 0, this.size.getNumVal());
         }
-        return duplicateBoard;
+        return new Board(this.size, duplicateBoard);
     }
 
     public Board getBoardAfterMovingEmptyPieceUp() {
-        int[][] boardAfterMovingPieceUp = this.duplicateBoard();
-        int[] emptyPieceCoordinates = getEmptyPieceCoordinates();
+        int[] emptyPieceCoordinates = this.getEmptyPieceCoordinates();
         int emptyPieceRow = emptyPieceCoordinates[0];
         int emptyPieceCol = emptyPieceCoordinates[1];
         if (emptyPieceRow == 0) {
             return null;
         }
-        Board.switchPieces(boardAfterMovingPieceUp, emptyPieceRow, emptyPieceCol, emptyPieceRow - 1, emptyPieceCol);
-        return new Board(this.size, boardAfterMovingPieceUp);
+        Board boardAfterMovingPieceUp = this.duplicateBoard();
+        boardAfterMovingPieceUp.switchPieces(emptyPieceRow, emptyPieceCol, emptyPieceRow - 1,
+                emptyPieceCol);
+        return boardAfterMovingPieceUp;
     }
 
     public Board getBoardAfterMovingEmptyPieceDown() {
-        int[][] boardAfterMovingPieceDown = this.duplicateBoard();
-        int[] emptyPieceCoordinates = getEmptyPieceCoordinates();
+        int[] emptyPieceCoordinates = this.getEmptyPieceCoordinates();
         int emptyPieceRow = emptyPieceCoordinates[0];
         int emptyPieceCol = emptyPieceCoordinates[1];
         if (emptyPieceRow == this.size.getNumVal() - 1) {
             return null;
         }
-        Board.switchPieces(boardAfterMovingPieceDown, emptyPieceRow, emptyPieceCol, emptyPieceRow + 1, emptyPieceCol);
-        return new Board(this.size, boardAfterMovingPieceDown);
+        Board boardAfterMovingPieceDown = this.duplicateBoard();
+        boardAfterMovingPieceDown.switchPieces(emptyPieceRow, emptyPieceCol, emptyPieceRow + 1, emptyPieceCol);
+        return boardAfterMovingPieceDown;
     }
 
-
     public Board getBoardAfterMovingEmptyPieceLeft() {
-        int[][] boardAfterMovingPieceLeft = this.duplicateBoard();
         int[] emptyPieceCoordinates = getEmptyPieceCoordinates();
         int emptyPieceRow = emptyPieceCoordinates[0];
         int emptyPieceCol = emptyPieceCoordinates[1];
         if (emptyPieceCol == 0) {
             return null;
         }
-        Board.switchPieces(boardAfterMovingPieceLeft, emptyPieceRow, emptyPieceCol, emptyPieceRow, emptyPieceCol - 1);
-        return new Board(this.size, boardAfterMovingPieceLeft);
+        Board boardAfterMovingPieceLeft = this.duplicateBoard();
+        boardAfterMovingPieceLeft.switchPieces(emptyPieceRow, emptyPieceCol, emptyPieceRow, emptyPieceCol - 1);
+        return boardAfterMovingPieceLeft;
     }
 
     public Board getBoardAfterMovingEmptyPieceRight() {
-        int[][] boardAfterMovingPieceRight = this.duplicateBoard();
         int[] emptyPieceCoordinates = getEmptyPieceCoordinates();
         int emptyPieceRow = emptyPieceCoordinates[0];
         int emptyPieceCol = emptyPieceCoordinates[1];
         if (emptyPieceCol == this.size.getNumVal() - 1) {
             return null;
         }
-        Board.switchPieces(boardAfterMovingPieceRight, emptyPieceRow, emptyPieceCol, emptyPieceRow, emptyPieceCol + 1);
-        return new Board(this.size, boardAfterMovingPieceRight);
+        Board boardAfterMovingPieceRight = this.duplicateBoard();
+        boardAfterMovingPieceRight.switchPieces(emptyPieceRow, emptyPieceCol, emptyPieceRow, emptyPieceCol + 1);
+        return boardAfterMovingPieceRight;
     }
 
     @Override
@@ -173,12 +172,15 @@ public class Board implements GraphableValue {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Board)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Board))
+            return false;
 
         Board board1 = (Board) o;
 
-        if (this.getSize() != board1.getSize()) return false;
+        if (this.getSize() != board1.getSize())
+            return false;
         return Arrays.deepEquals(this.board, board1.getBoard());
     }
 
