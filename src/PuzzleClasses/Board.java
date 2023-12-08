@@ -128,25 +128,25 @@ public class Board implements GraphableValue {
     @Override
     public List<GraphableValue> getAdjacentValues() {
 
-        List<GraphableValue> adjecntValues = new ArrayList<>();
+        List<GraphableValue> adjacentValues = new ArrayList<>();
         Board boardAfterMovingEmptyPieceUp = this.getBoardAfterMovingEmptyPieceUp();
         Board boardAfterMovingEmptyPieceDown = this.getBoardAfterMovingEmptyPieceDown();
         Board boardAfterMovingEmptyPieceLeft = this.getBoardAfterMovingEmptyPieceLeft();
         Board boardAfterMovingEmptyPieceRight = this.getBoardAfterMovingEmptyPieceRight();
 
         if (boardAfterMovingEmptyPieceUp != null) {
-            adjecntValues.add(boardAfterMovingEmptyPieceUp);
+            adjacentValues.add(boardAfterMovingEmptyPieceUp);
         }
         if (boardAfterMovingEmptyPieceDown != null) {
-            adjecntValues.add(boardAfterMovingEmptyPieceDown);
+            adjacentValues.add(boardAfterMovingEmptyPieceDown);
         }
         if (boardAfterMovingEmptyPieceLeft != null) {
-            adjecntValues.add(boardAfterMovingEmptyPieceLeft);
+            adjacentValues.add(boardAfterMovingEmptyPieceLeft);
         }
         if (boardAfterMovingEmptyPieceRight != null) {
-            adjecntValues.add(boardAfterMovingEmptyPieceRight);
+            adjacentValues.add(boardAfterMovingEmptyPieceRight);
         }
-        return adjecntValues;
+        return adjacentValues;
     }
 
     public Board moveRandomly(int n) {
