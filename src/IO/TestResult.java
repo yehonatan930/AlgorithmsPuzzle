@@ -98,9 +98,9 @@ public class TestResult {
         int averageRouteLength = 0;
 
         for (DataPerRun dataPerRun : this.BFSDataPerRuns) {
-            averageDuration += dataPerRun.durationInMilliseconds;
-            averageNumberOfVerticesDiscovered += dataPerRun.numberOfVerticesDiscovered;
-            averageRouteLength += dataPerRun.routeLength;
+            averageDuration += dataPerRun.getDurationInMilliseconds();
+            averageNumberOfVerticesDiscovered += dataPerRun.getNumberOfVerticesDiscovered();
+            averageRouteLength += dataPerRun.getRouteLength();
         }
 
         averageDuration /= this.BFSDataPerRuns.size();
@@ -116,9 +116,9 @@ public class TestResult {
         int averageRouteLength = 0;
 
         for (DataPerRun dataPerRun : this.DijkstraDataPerRuns) {
-            averageDuration += dataPerRun.durationInMilliseconds;
-            averageNumberOfVerticesDiscovered += dataPerRun.numberOfVerticesDiscovered;
-            averageRouteLength += dataPerRun.routeLength;
+            averageDuration += dataPerRun.getDurationInMilliseconds();
+            averageNumberOfVerticesDiscovered += dataPerRun.getNumberOfVerticesDiscovered();
+            averageRouteLength += dataPerRun.getRouteLength();
         }
 
         averageDuration /= this.DijkstraDataPerRuns.size();
@@ -134,9 +134,9 @@ public class TestResult {
         int averageRouteLength = 0;
 
         for (DataPerRun dataPerRun : this.AStarManhattanDataPerRuns) {
-            averageDuration += dataPerRun.durationInMilliseconds;
-            averageNumberOfVerticesDiscovered += dataPerRun.numberOfVerticesDiscovered;
-            averageRouteLength += dataPerRun.routeLength;
+            averageDuration += dataPerRun.getDurationInMilliseconds();
+            averageNumberOfVerticesDiscovered += dataPerRun.getNumberOfVerticesDiscovered();
+            averageRouteLength += dataPerRun.getRouteLength();
         }
 
         averageDuration /= this.AStarManhattanDataPerRuns.size();
@@ -152,9 +152,9 @@ public class TestResult {
         int averageRouteLength = 0;
 
         for (DataPerRun dataPerRun : this.AStarBadDataPerRuns) {
-            averageDuration += dataPerRun.durationInMilliseconds;
-            averageNumberOfVerticesDiscovered += dataPerRun.numberOfVerticesDiscovered;
-            averageRouteLength += dataPerRun.routeLength;
+            averageDuration += dataPerRun.getDurationInMilliseconds();
+            averageNumberOfVerticesDiscovered += dataPerRun.getNumberOfVerticesDiscovered();
+            averageRouteLength += dataPerRun.getRouteLength();
         }
 
         averageDuration /= this.AStarBadDataPerRuns.size();
