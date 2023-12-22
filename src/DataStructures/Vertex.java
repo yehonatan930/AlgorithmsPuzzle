@@ -5,16 +5,16 @@ import java.util.List;
 
 public class Vertex {
     protected GraphableValue value;
-    protected int distanceFromRoot;
+    protected double distanceFromRoot;
     protected Vertex priorVertex;
 
     public Vertex(GraphableValue value) {
         this.value = value;
-        this.distanceFromRoot = Integer.MAX_VALUE - 999999;
+        this.distanceFromRoot = Double.POSITIVE_INFINITY;
         this.priorVertex = null;
     }
 
-    public Vertex(GraphableValue value, int distanceFromRoot) {
+    public Vertex(GraphableValue value, double distanceFromRoot) {
         this.value = value;
         this.distanceFromRoot = distanceFromRoot;
         this.priorVertex = null;
@@ -28,11 +28,11 @@ public class Vertex {
         this.value = value;
     }
 
-    public int getDistanceFromRoot() {
+    public double getDistanceFromRoot() {
         return this.distanceFromRoot;
     }
 
-    public void setDistanceFromRoot(int distanceFromRoot) {
+    public void setDistanceFromRoot(double distanceFromRoot) {
         this.distanceFromRoot = distanceFromRoot;
     }
 
@@ -43,19 +43,7 @@ public class Vertex {
     public void setPriorVertex(Vertex priorVertex) {
         this.priorVertex = priorVertex;
     }
-
-    public boolean relax(Vertex other, int weight) {
-        int tentativeDistance = this.getDistanceFromRoot() + weight;
-
-        if (tentativeDistance < other.getDistanceFromRoot()) {
-            other.setDistanceFromRoot(tentativeDistance);
-            other.setPriorVertex(this);
-
-            return true;
-        }
-        return false;
-    }
-
+    
     public List<Vertex> getAdjacentVertices() {
         List<GraphableValue> adjacentValues = this.getValue().getAdjacentValues();
         List<Vertex> adjacentVertices = new ArrayList<>();
@@ -65,16 +53,19 @@ public class Vertex {
         return adjacentVertices;
     }
 
-    public int getRouteLengthTo(Vertex goal) {
+    public int getRouteLengthTo(Vertex goal) throws IllegalArgumentException {
         Vertex current = goal;
         int routeLength = 0;
-        while (!current.equals(this)) {
+
+        while (current != null && !current.equals(this)) {
             routeLength++;
             current = current.getPriorVertex();
-            if (current == null) {
-                return -1;
-            }
         }
+
+        if (current == null) {
+            throw new IllegalArgumentException("No route from goal to this vertex");
+        }
+
         return routeLength + 1;
     }
 }

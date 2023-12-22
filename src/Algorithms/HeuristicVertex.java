@@ -14,16 +14,16 @@ public class HeuristicVertex extends Vertex {
         this.heuristicFunction = heuristicFunction;
     }
 
-    public HeuristicVertex(GraphableValue value, int distanceFromRoot, HeuristicFunction heuristicFunction) {
+    public HeuristicVertex(GraphableValue value, double distanceFromRoot, HeuristicFunction heuristicFunction) {
         super(value, distanceFromRoot);
         this.heuristicFunction = heuristicFunction;
     }
 
-    public int calculateHeuristicDistanceFromRoot() {
+    public double calculateHeuristicDistanceFromRoot() {
         return this.heuristicFunction.calculateHeuristic(this.getValue());
     }
 
-    public int getHeuristicDistanceFromRootPlusDistanceFromRoot() {
+    public double getHeuristicDistanceFromRootPlusDistanceFromRoot() {
         return this.calculateHeuristicDistanceFromRoot() + this.distanceFromRoot;
     }
 
@@ -37,5 +37,4 @@ public class HeuristicVertex extends Vertex {
 
         return adjacentVertices;
     }
-
 }

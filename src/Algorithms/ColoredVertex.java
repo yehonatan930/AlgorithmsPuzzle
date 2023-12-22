@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColoredVertex extends Vertex {
-    COLORS color;
+    private COLORS color;
 
     public ColoredVertex(GraphableValue value) {
         super(value);
         this.color = COLORS.WHITE;
     }
 
-    public ColoredVertex(GraphableValue value, int distanceFromRoot, COLORS color) {
+    public ColoredVertex(GraphableValue value, double distanceFromRoot, COLORS color) {
         super(value, distanceFromRoot);
         this.color = color;
     }
