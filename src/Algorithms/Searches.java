@@ -8,12 +8,12 @@ import IO.DataPerRun;
 import java.util.*;
 
 public class Searches {
-    public static HeuristicFunction manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
-    public static HeuristicFunction dijkstra = value -> 0;
+    public static final HeuristicFunction manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
+    public static final HeuristicFunction dijkstra = value -> 0;
+    public static final HeuristicFunction bad = value -> value.getManhattanDistanceFromIdealValue() + (Math.random() * 10);
+    private static final int EDGE_WEIGHT = 1;
 
-    public static HeuristicFunction bad = value -> (int) (Math.random() * 10);
-
-    public static DataPerRun BFS(GraphableValue root, GraphableValue goal) {
+    public static DataPerRun BFS(GraphableValue root, GraphableValue goal) throws IllegalArgumentException {
         long start = System.currentTimeMillis();
 
         ColoredVertex rootVertex = new ColoredVertex(root, 0, COLORS.GRAY);
@@ -35,13 +35,15 @@ public class Searches {
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
-            List<ColoredVertex> adjacentVertices = graph.getAndFillAdjVerticesOfVertex(u);
+            List<ColoredVertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(u);
 
             for (ColoredVertex v : adjacentVertices) {
                 if (v.getColor() == COLORS.WHITE) {
-                    v.setColor(COLORS.GRAY);
-                    v.setDistanceFromRoot(u.getDistanceFromRoot() + 1);
+                    double tentativeDistance = u.getDistanceFromRoot() + EDGE_WEIGHT;
+
+                    v.setDistanceFromRoot(tentativeDistance);
                     v.setPriorVertex(u);
+                    v.setColor(COLORS.GRAY);
                     queue.add(v);
                 }
             }
@@ -51,7 +53,7 @@ public class Searches {
         return null;
     }
 
-    public static DataPerRun AStar(GraphableValue root, GraphableValue goal, HeuristicFunction heuristicFunction) {
+    public static DataPerRun AStar(GraphableValue root, GraphableValue goal, HeuristicFunction heuristicFunction) throws IllegalArgumentException {
         long start = System.currentTimeMillis();
 
         HeuristicVertex rootVertex = new HeuristicVertex(root, 0, heuristicFunction);
@@ -59,7 +61,7 @@ public class Searches {
         Graph<HeuristicVertex> graph = new Graph<>(rootVertex);
 
         PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(
-                Comparator.comparingInt(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
+                Comparator.comparingDouble(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
         openSet.add(rootVertex);
 
         while (!openSet.isEmpty()) {
@@ -73,11 +75,18 @@ public class Searches {
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
-            List<HeuristicVertex> adjacentVertices = graph.getAndFillAdjVerticesOfVertex(u);
+            List<HeuristicVertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(u);
 
             for (HeuristicVertex v : adjacentVertices) {
-                if (u.relax(v, graph.getWeight(u, v)) && !openSet.contains(v)) {
-                    openSet.add(v);
+                double tentativeDistance = u.getDistanceFromRoot() + EDGE_WEIGHT;
+
+                if (tentativeDistance < v.getDistanceFromRoot()) {
+                    v.setDistanceFromRoot(tentativeDistance);
+                    v.setPriorVertex(u);
+
+                    if (!openSet.contains(v)) {
+                        openSet.add(v);
+                    }
                 }
             }
         }

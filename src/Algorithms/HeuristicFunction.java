@@ -4,5 +4,5 @@ import DataStructures.GraphableValue;
 
 @FunctionalInterface
 public interface HeuristicFunction {
-    int calculateHeuristic(GraphableValue value);
+    double calculateHeuristic(GraphableValue value);
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Graph<V extends Vertex> {
     private Map<V, List<V>> adjacentVerticesPerVertex;
@@ -15,7 +14,7 @@ public class Graph<V extends Vertex> {
 
     public Graph(V vertex) {
         this.adjacentVerticesPerVertex = new HashMap<V, List<V>>();
-        this.addV(vertex);
+        this.addVertex(vertex);
     }
 
     public Graph(Map<V, List<V>> adjacentVerticesPerVertex) {
@@ -30,11 +29,11 @@ public class Graph<V extends Vertex> {
         this.adjacentVerticesPerVertex = adjacentVerticesPerVertex;
     }
 
-    public void addV(V vertex) {
+    public void addVertex(V vertex) {
         this.adjacentVerticesPerVertex.putIfAbsent(vertex, new ArrayList<V>());
     }
 
-    public void removeV(V vertex) {
+    public void removeVertex(V vertex) {
         this.adjacentVerticesPerVertex.values().forEach(e -> e.remove(vertex));
         this.adjacentVerticesPerVertex.remove(vertex);
     }
@@ -57,34 +56,26 @@ public class Graph<V extends Vertex> {
         return this.adjacentVerticesPerVertex.get(vertex);
     }
 
-    public List<V> getAndFillAdjVerticesOfVertex(V vertex) {
+    public List<V> buildAndGetAdjVerticesOfVertex(V vertex) {
         this.buildGraphAroundVertex(vertex);
 
         return this.getAdjVerticesOfVertex(vertex);
     }
 
     public void buildGraphAroundVertex(V vertex) {
-        if (vertex == null) {
-            return;
-        }
-        GraphableValue value = vertex.getValue();
-        if (value == null) {
+        if (vertex == null || vertex.getValue() == null) {
             return;
         }
 
-        List<V> adjacentVertices = vertex.getAdjacentVertices().stream().map(v -> (V) v).collect(Collectors.toList());
+        List<V> adjacentVertices = (List<V>) vertex.getAdjacentVertices();
 
         for (V adjacentVertex : adjacentVertices) {
             boolean isVertexAlreadyInGraph = this.getAdjacentVerticesPerVertex().containsKey(adjacentVertex);
 
             if (!isVertexAlreadyInGraph) {
-                this.addV(adjacentVertex);
+                this.addVertex(adjacentVertex);
                 this.addEdge(vertex, adjacentVertex);
             }
         }
-    }
-
-    public int getWeight(V v1, V v2) {
-        return 1;
     }
 }
