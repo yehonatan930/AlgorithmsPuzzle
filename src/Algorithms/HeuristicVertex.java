@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HeuristicVertex extends Vertex {
-    HeuristicFunction heuristicFunction;
+    private final HeuristicFunction heuristicFunction;
 
     public HeuristicVertex(GraphableValue value, HeuristicFunction heuristicFunction) {
         super(value);
