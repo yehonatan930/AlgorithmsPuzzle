@@ -3,6 +3,7 @@ package Algorithms;
 import DataStructures.COLORS;
 import DataStructures.Graph;
 import DataStructures.GraphableValue;
+import DataStructures.Vertex;
 import IO.DataPerRun;
 
 import java.util.*;
@@ -17,7 +18,7 @@ public class Searches {
         long start = System.currentTimeMillis();
 
         ColoredVertex rootVertex = new ColoredVertex(root, 0, COLORS.GRAY);
-        Graph<ColoredVertex> graph = new Graph<>(rootVertex);
+        Graph graph = new Graph(rootVertex);
 
         Queue<ColoredVertex> queue = new LinkedList<>();
         queue.add(rootVertex);
@@ -35,16 +36,17 @@ public class Searches {
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
-            List<ColoredVertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(u);
+            List<Vertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(u);
 
-            for (ColoredVertex v : adjacentVertices) {
-                if (v.getColor() == COLORS.WHITE) {
+            for (Vertex v : adjacentVertices) {
+                ColoredVertex coloredV = (ColoredVertex) v;
+                if (coloredV.getColor() == COLORS.WHITE) {
                     double tentativeDistance = u.getDistanceFromRoot() + EDGE_WEIGHT;
 
-                    v.setDistanceFromRoot(tentativeDistance);
-                    v.setPriorVertex(u);
-                    v.setColor(COLORS.GRAY);
-                    queue.add(v);
+                    coloredV.setDistanceFromRoot(tentativeDistance);
+                    coloredV.setPriorVertex(u);
+                    coloredV.setColor(COLORS.GRAY);
+                    queue.add(coloredV);
                 }
             }
             u.setColor(COLORS.BLACK);
@@ -58,7 +60,7 @@ public class Searches {
 
         HeuristicVertex rootVertex = new HeuristicVertex(root, 0, heuristicFunction);
 
-        Graph<HeuristicVertex> graph = new Graph<>(rootVertex);
+        Graph graph = new Graph(rootVertex);
 
         PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(
                 Comparator.comparingDouble(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
@@ -75,17 +77,18 @@ public class Searches {
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
-            List<HeuristicVertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(u);
+            List<Vertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(u);
 
-            for (HeuristicVertex v : adjacentVertices) {
+            for (Vertex v : adjacentVertices) {
                 double tentativeDistance = u.getDistanceFromRoot() + EDGE_WEIGHT;
 
-                if (tentativeDistance < v.getDistanceFromRoot()) {
-                    v.setDistanceFromRoot(tentativeDistance);
-                    v.setPriorVertex(u);
+                HeuristicVertex heuristicV = (HeuristicVertex) v;
+                if (tentativeDistance < heuristicV.getDistanceFromRoot()) {
+                    heuristicV.setDistanceFromRoot(tentativeDistance);
+                    heuristicV.setPriorVertex(u);
 
-                    if (!openSet.contains(v)) {
-                        openSet.add(v);
+                    if (!openSet.contains(heuristicV)) {
+                        openSet.add(heuristicV);
                     }
                 }
             }
