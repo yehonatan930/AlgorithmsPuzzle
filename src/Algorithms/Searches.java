@@ -1,9 +1,6 @@
 package Algorithms;
 
-import DataStructures.COLORS;
-import DataStructures.Graph;
-import DataStructures.GraphableValue;
-import DataStructures.Vertex;
+import DataStructures.*;
 import IO.DataPerRun;
 
 import java.util.*;

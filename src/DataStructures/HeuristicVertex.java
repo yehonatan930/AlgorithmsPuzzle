@@ -1,7 +1,4 @@
-package Algorithms;
-
-import DataStructures.GraphableValue;
-import DataStructures.Vertex;
+package DataStructures;
 
 import java.util.ArrayList;
 import java.util.List;

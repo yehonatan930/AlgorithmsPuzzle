@@ -1,6 +1,4 @@
-package Algorithms;
-
-import DataStructures.GraphableValue;
+package DataStructures;
 
 @FunctionalInterface
 public interface HeuristicFunction {
