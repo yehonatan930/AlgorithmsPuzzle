@@ -60,7 +60,7 @@ public class TestResult {
 
             System.out.println("\tStarting AStarBad... ");
 
-            DataPerRun AStarBadDataPerRun = Searches.AStar(board, idealBoard, Searches.bad);
+            DataPerRun AStarBadDataPerRun = Searches.AStar(board, idealBoard, Searches.unAddmissable);
             this.addAStarBadDataPerRun(AStarBadDataPerRun);
 
             System.out.println("\tAStarBad done " + this.getCurrentTimeFrom(start));

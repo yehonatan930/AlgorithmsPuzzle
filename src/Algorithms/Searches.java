@@ -8,7 +8,7 @@ import java.util.*;
 public class Searches {
     public static final HeuristicFunction manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
     public static final HeuristicFunction dijkstra = value -> 0;
-    public static final HeuristicFunction bad = value -> value.getManhattanDistanceFromIdealValue() + (Math.random() * 10);
+    public static final HeuristicFunction unAddmissable = value -> value.getManhattanDistanceFromIdealValue() + (Math.random() * 10);
     private static final int EDGE_WEIGHT = 1;
 
     public static DataPerRun BFS(GraphableValue root, GraphableValue goal) throws IllegalArgumentException {
@@ -17,36 +17,35 @@ public class Searches {
         ColoredVertex rootVertex = new ColoredVertex(root, 0, COLORS.GRAY);
         Graph graph = new Graph(rootVertex);
 
-        Queue<ColoredVertex> queue = new LinkedList<>();
-        queue.add(rootVertex);
+        Queue<ColoredVertex> unExaminedVertices = new LinkedList<>();
+        unExaminedVertices.add(rootVertex);
 
-        while (!queue.isEmpty()) {
-            ColoredVertex u = queue.poll();
+        while (!unExaminedVertices.isEmpty()) {
+            ColoredVertex examinedVertex = unExaminedVertices.poll();
 
-            if (u.getValue().equals(goal)) {
-                // Goal reached
-
+            if (examinedVertex.getValue().equals(goal)) {
                 long elapsedTime = System.currentTimeMillis() - start;
                 int numberOfVertices = graph.getAdjacentVerticesPerVertex().keySet().size();
-                int routeLength = rootVertex.getRouteLengthTo(u);
+                int routeLength = rootVertex.getRouteLengthTo(examinedVertex);
 
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
-            List<Vertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(u);
+            List<Vertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(examinedVertex);
 
             for (Vertex v : adjacentVertices) {
-                ColoredVertex coloredV = (ColoredVertex) v;
-                if (coloredV.getColor() == COLORS.WHITE) {
-                    double tentativeDistance = u.getDistanceFromRoot() + EDGE_WEIGHT;
+                ColoredVertex currAdjecntVertex = (ColoredVertex) v;
 
-                    coloredV.setDistanceFromRoot(tentativeDistance);
-                    coloredV.setPriorVertex(u);
-                    coloredV.setColor(COLORS.GRAY);
-                    queue.add(coloredV);
+                if (currAdjecntVertex.getColor() == COLORS.WHITE) {
+                    double tentativeDistance = examinedVertex.getDistanceFromRoot() + EDGE_WEIGHT;
+
+                    currAdjecntVertex.setDistanceFromRoot(tentativeDistance);
+                    currAdjecntVertex.setPriorVertex(examinedVertex);
+                    currAdjecntVertex.setColor(COLORS.GRAY);
+                    unExaminedVertices.add(currAdjecntVertex);
                 }
             }
-            u.setColor(COLORS.BLACK);
+            examinedVertex.setColor(COLORS.BLACK);
         }
 
         return null;
@@ -59,33 +58,33 @@ public class Searches {
 
         Graph graph = new Graph(rootVertex);
 
-        PriorityQueue<HeuristicVertex> openSet = new PriorityQueue<>(
+        PriorityQueue<HeuristicVertex> unExaminedVertices = new PriorityQueue<>(
                 Comparator.comparingDouble(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
-        openSet.add(rootVertex);
+        unExaminedVertices.add(rootVertex);
 
-        while (!openSet.isEmpty()) {
-            HeuristicVertex u = openSet.poll();
+        while (!unExaminedVertices.isEmpty()) {
+            HeuristicVertex examinedVertex = unExaminedVertices.poll();
 
-            if (u.getValue().equals(goal)) {
+            if (examinedVertex.getValue().equals(goal)) {
                 long elapsedTime = System.currentTimeMillis() - start;
                 int numberOfVertices = graph.getAdjacentVerticesPerVertex().keySet().size();
-                int routeLength = rootVertex.getRouteLengthTo(u);
+                int routeLength = rootVertex.getRouteLengthTo(examinedVertex);
 
                 return new DataPerRun(elapsedTime, numberOfVertices, routeLength);
             }
 
-            List<Vertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(u);
+            List<Vertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(examinedVertex);
 
             for (Vertex v : adjacentVertices) {
-                double tentativeDistance = u.getDistanceFromRoot() + EDGE_WEIGHT;
+                HeuristicVertex currAdjecantVertex = (HeuristicVertex) v;
 
-                HeuristicVertex heuristicV = (HeuristicVertex) v;
-                if (tentativeDistance < heuristicV.getDistanceFromRoot()) {
-                    heuristicV.setDistanceFromRoot(tentativeDistance);
-                    heuristicV.setPriorVertex(u);
+                double distanceFromRootThroughExaminedVertexToCurrAdjacent = examinedVertex.getDistanceFromRoot() + EDGE_WEIGHT;
+                if (distanceFromRootThroughExaminedVertexToCurrAdjacent < currAdjecantVertex.getDistanceFromRoot()) {
+                    currAdjecantVertex.setDistanceFromRoot(distanceFromRootThroughExaminedVertexToCurrAdjacent);
+                    currAdjecantVertex.setPriorVertex(examinedVertex);
 
-                    if (!openSet.contains(heuristicV)) {
-                        openSet.add(heuristicV);
+                    if (!unExaminedVertices.contains(currAdjecantVertex)) {
+                        unExaminedVertices.add(currAdjecantVertex);
                     }
                 }
             }
