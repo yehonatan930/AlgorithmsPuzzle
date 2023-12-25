@@ -15,7 +15,7 @@ public class TestResult {
     List<DataPerRun> BFSDataPerRuns = new ArrayList<>();
     List<DataPerRun> DijkstraDataPerRuns = new ArrayList<>();
     List<DataPerRun> AStarManhattanDataPerRuns = new ArrayList<>();
-    List<DataPerRun> AStarBadDataPerRuns = new ArrayList<>();
+    List<DataPerRun> AStarUnAddmissableDataPerRuns = new ArrayList<>();
 
     public TestResult(int numberOfBoards, BOARD_SIZES boardSize, int numberOfMoves) {
         this.boardSize = boardSize;
@@ -58,12 +58,12 @@ public class TestResult {
 
             System.out.println("\tAStarManhattan done " + this.getCurrentTimeFrom(start));
 
-            System.out.println("\tStarting AStarBad... ");
+            System.out.println("\tStarting AStarUnAddmissable... ");
 
-            DataPerRun AStarBadDataPerRun = Searches.AStar(board, idealBoard, Searches.unAddmissable);
-            this.addAStarBadDataPerRun(AStarBadDataPerRun);
+            DataPerRun AStarUnAddmissableDataPerRun = Searches.AStar(board, idealBoard, Searches.unAddmissable);
+            this.addAStarUnAddmissableDataPerRun(AStarUnAddmissableDataPerRun);
 
-            System.out.println("\tAStarBad done " + this.getCurrentTimeFrom(start));
+            System.out.println("\tAStarUnAddmissable done " + this.getCurrentTimeFrom(start));
         }
     }
 
@@ -88,8 +88,8 @@ public class TestResult {
         this.AStarManhattanDataPerRuns.add(dataPerRun);
     }
 
-    public void addAStarBadDataPerRun(DataPerRun dataPerRun) {
-        this.AStarBadDataPerRuns.add(dataPerRun);
+    public void addAStarUnAddmissableDataPerRun(DataPerRun dataPerRun) {
+        this.AStarUnAddmissableDataPerRuns.add(dataPerRun);
     }
 
     public DataPerRun getBFSAverageDataPerRun() {
@@ -146,20 +146,20 @@ public class TestResult {
         return new DataPerRun(averageDuration, averageNumberOfVerticesDiscovered, averageRouteLength);
     }
 
-    public DataPerRun getAStarBadAverageDataPerRun() {
+    public DataPerRun getAStarUnAddmissableAverageDataPerRun() {
         long averageDuration = 0;
         int averageNumberOfVerticesDiscovered = 0;
         int averageRouteLength = 0;
 
-        for (DataPerRun dataPerRun : this.AStarBadDataPerRuns) {
+        for (DataPerRun dataPerRun : this.AStarUnAddmissableDataPerRuns) {
             averageDuration += dataPerRun.getDurationInMilliseconds();
             averageNumberOfVerticesDiscovered += dataPerRun.getNumberOfVerticesDiscovered();
             averageRouteLength += dataPerRun.getRouteLength();
         }
 
-        averageDuration /= this.AStarBadDataPerRuns.size();
-        averageNumberOfVerticesDiscovered /= this.AStarBadDataPerRuns.size();
-        averageRouteLength /= this.AStarBadDataPerRuns.size();
+        averageDuration /= this.AStarUnAddmissableDataPerRuns.size();
+        averageNumberOfVerticesDiscovered /= this.AStarUnAddmissableDataPerRuns.size();
+        averageRouteLength /= this.AStarUnAddmissableDataPerRuns.size();
 
         return new DataPerRun(averageDuration, averageNumberOfVerticesDiscovered, averageRouteLength);
     }
@@ -171,7 +171,7 @@ public class TestResult {
                 "\n\t\tBFS Average DataPerRuns = " + this.getBFSAverageDataPerRun().toString() +
                 "\n\t\tDijkstra Average DataPerRuns = " + this.getDijkistraAverageDataPerRun().toString() +
                 "\n\t\tAStarManhattan Average DataPerRuns = " + this.getAStarManhattenAverageDataPerRun().toString() +
-                "\n\t\tAStarBad Average DataPerRuns = " + this.getAStarBadAverageDataPerRun().toString() +
+                "\n\t\tAStarUnAddmissable Average DataPerRuns = " + this.getAStarUnAddmissableAverageDataPerRun().toString() +
                 "\n}";
     }
 }
