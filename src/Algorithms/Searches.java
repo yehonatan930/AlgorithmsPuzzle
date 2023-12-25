@@ -8,7 +8,7 @@ import java.util.*;
 public class Searches {
     public static final HeuristicFunction manhattan = GraphableValue::getManhattanDistanceFromIdealValue;
     public static final HeuristicFunction dijkstra = value -> 0;
-    public static final HeuristicFunction unAddmissable = value -> value.getManhattanDistanceFromIdealValue() + (Math.random() * 10);
+    public static final HeuristicFunction unAdmissible = value -> value.getManhattanDistanceFromIdealValue() + (Math.random() * 10);
     private static final int EDGE_WEIGHT = 1;
 
     public static DataPerRun BFS(GraphableValue root, GraphableValue goal) throws IllegalArgumentException {
