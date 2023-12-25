@@ -34,15 +34,15 @@ public class Searches {
             List<Vertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(examinedVertex);
 
             for (Vertex v : adjacentVertices) {
-                ColoredVertex currAdjecntVertex = (ColoredVertex) v;
+                ColoredVertex currAdjacentVertex = (ColoredVertex) v;
 
-                if (currAdjecntVertex.getColor() == COLORS.WHITE) {
+                if (currAdjacentVertex.getColor() == COLORS.WHITE) {
 
                     double distanceFromRootThroughExaminedVertexToCurrAdjacent = examinedVertex.getDistanceFromRoot() + EDGE_WEIGHT;
-                    currAdjecntVertex.setDistanceFromRoot(distanceFromRootThroughExaminedVertexToCurrAdjacent);
-                    currAdjecntVertex.setPriorVertex(examinedVertex);
-                    currAdjecntVertex.setColor(COLORS.GRAY);
-                    unExaminedVerticesQueue.add(currAdjecntVertex);
+                    currAdjacentVertex.setDistanceFromRoot(distanceFromRootThroughExaminedVertexToCurrAdjacent);
+                    currAdjacentVertex.setPriorVertex(examinedVertex);
+                    currAdjacentVertex.setColor(COLORS.GRAY);
+                    unExaminedVerticesQueue.add(currAdjacentVertex);
                 }
             }
             examinedVertex.setColor(COLORS.BLACK);
@@ -76,16 +76,16 @@ public class Searches {
             List<Vertex> adjacentVertices = graph.buildAndGetAdjVerticesOfVertex(examinedVertex);
 
             for (Vertex v : adjacentVertices) {
-                HeuristicVertex currAdjecantVertex = (HeuristicVertex) v;
+                HeuristicVertex currAdjacentVertex = (HeuristicVertex) v;
 
                 double distanceFromRootThroughExaminedVertexToCurrAdjacent = examinedVertex.getDistanceFromRoot() + EDGE_WEIGHT;
-                if (distanceFromRootThroughExaminedVertexToCurrAdjacent < currAdjecantVertex.getDistanceFromRoot()) {
+                if (distanceFromRootThroughExaminedVertexToCurrAdjacent < currAdjacentVertex.getDistanceFromRoot()) {
 
-                    currAdjecantVertex.setDistanceFromRoot(distanceFromRootThroughExaminedVertexToCurrAdjacent);
-                    currAdjecantVertex.setPriorVertex(examinedVertex);
+                    currAdjacentVertex.setDistanceFromRoot(distanceFromRootThroughExaminedVertexToCurrAdjacent);
+                    currAdjacentVertex.setPriorVertex(examinedVertex);
 
-                    if (!unExaminedVerticesSortedQueue.contains(currAdjecantVertex)) {
-                        unExaminedVerticesSortedQueue.add(currAdjecantVertex);
+                    if (!unExaminedVerticesSortedQueue.contains(currAdjacentVertex)) {
+                        unExaminedVerticesSortedQueue.add(currAdjacentVertex);
                     }
                 }
             }
