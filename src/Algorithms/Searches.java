@@ -17,11 +17,11 @@ public class Searches {
         ColoredVertex rootVertex = new ColoredVertex(root, 0, COLORS.GRAY);
         Graph graph = new Graph(rootVertex);
 
-        Queue<ColoredVertex> unExaminedVertices = new LinkedList<>();
-        unExaminedVertices.add(rootVertex);
+        Queue<ColoredVertex> unExaminedVerticesQueue = new LinkedList<>();
+        unExaminedVerticesQueue.add(rootVertex);
 
-        while (!unExaminedVertices.isEmpty()) {
-            ColoredVertex examinedVertex = unExaminedVertices.poll();
+        while (!unExaminedVerticesQueue.isEmpty()) {
+            ColoredVertex examinedVertex = unExaminedVerticesQueue.poll();
 
             if (examinedVertex.getValue().equals(goal)) {
                 long elapsedTime = System.currentTimeMillis() - start;
@@ -37,12 +37,12 @@ public class Searches {
                 ColoredVertex currAdjecntVertex = (ColoredVertex) v;
 
                 if (currAdjecntVertex.getColor() == COLORS.WHITE) {
-                    double distanceFromRootThroughExaminedVertexToCurrAdjacent = examinedVertex.getDistanceFromRoot() + EDGE_WEIGHT;
 
+                    double distanceFromRootThroughExaminedVertexToCurrAdjacent = examinedVertex.getDistanceFromRoot() + EDGE_WEIGHT;
                     currAdjecntVertex.setDistanceFromRoot(distanceFromRootThroughExaminedVertexToCurrAdjacent);
                     currAdjecntVertex.setPriorVertex(examinedVertex);
                     currAdjecntVertex.setColor(COLORS.GRAY);
-                    unExaminedVertices.add(currAdjecntVertex);
+                    unExaminedVerticesQueue.add(currAdjecntVertex);
                 }
             }
             examinedVertex.setColor(COLORS.BLACK);
@@ -58,12 +58,12 @@ public class Searches {
 
         Graph graph = new Graph(rootVertex);
 
-        PriorityQueue<HeuristicVertex> unExaminedVertices = new PriorityQueue<>(
+        PriorityQueue<HeuristicVertex> unExaminedVerticesSortedQueue = new PriorityQueue<>(
                 Comparator.comparingDouble(HeuristicVertex::getHeuristicDistanceFromRootPlusDistanceFromRoot));
-        unExaminedVertices.add(rootVertex);
+        unExaminedVerticesSortedQueue.add(rootVertex);
 
-        while (!unExaminedVertices.isEmpty()) {
-            HeuristicVertex examinedVertex = unExaminedVertices.poll();
+        while (!unExaminedVerticesSortedQueue.isEmpty()) {
+            HeuristicVertex examinedVertex = unExaminedVerticesSortedQueue.poll();
 
             if (examinedVertex.getValue().equals(goal)) {
                 long elapsedTime = System.currentTimeMillis() - start;
@@ -80,11 +80,12 @@ public class Searches {
 
                 double distanceFromRootThroughExaminedVertexToCurrAdjacent = examinedVertex.getDistanceFromRoot() + EDGE_WEIGHT;
                 if (distanceFromRootThroughExaminedVertexToCurrAdjacent < currAdjecantVertex.getDistanceFromRoot()) {
+
                     currAdjecantVertex.setDistanceFromRoot(distanceFromRootThroughExaminedVertexToCurrAdjacent);
                     currAdjecantVertex.setPriorVertex(examinedVertex);
 
-                    if (!unExaminedVertices.contains(currAdjecantVertex)) {
-                        unExaminedVertices.add(currAdjecantVertex);
+                    if (!unExaminedVerticesSortedQueue.contains(currAdjecantVertex)) {
+                        unExaminedVerticesSortedQueue.add(currAdjecantVertex);
                     }
                 }
             }
