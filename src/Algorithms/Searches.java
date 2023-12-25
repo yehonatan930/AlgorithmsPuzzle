@@ -37,9 +37,9 @@ public class Searches {
                 ColoredVertex currAdjecntVertex = (ColoredVertex) v;
 
                 if (currAdjecntVertex.getColor() == COLORS.WHITE) {
-                    double tentativeDistance = examinedVertex.getDistanceFromRoot() + EDGE_WEIGHT;
+                    double distanceFromRootThroughExaminedVertexToCurrAdjacent = examinedVertex.getDistanceFromRoot() + EDGE_WEIGHT;
 
-                    currAdjecntVertex.setDistanceFromRoot(tentativeDistance);
+                    currAdjecntVertex.setDistanceFromRoot(distanceFromRootThroughExaminedVertexToCurrAdjacent);
                     currAdjecntVertex.setPriorVertex(examinedVertex);
                     currAdjecntVertex.setColor(COLORS.GRAY);
                     unExaminedVertices.add(currAdjecntVertex);
